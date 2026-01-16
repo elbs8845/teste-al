@@ -6,6 +6,12 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<script>
+let user = JSON.parse(localStorage.getItem("logado"));
+if(!user || user.tipo !== "vendedor"){
+  location.href = "index.html";
+}
+</script>
 
 <header>
   <h1>ALPHA <span>SOLUÇÕES</span> | Vendedor</h1>
