@@ -94,29 +94,44 @@
   </div>
 
   <!-- CONTATOS -->
-  <div id="contatoBox" class="box">
-    <h3>📇 Novo Contato</h3>
-    <input id="nome" placeholder="Nome">
-    <input id="telefone" placeholder="Telefone">
-    <button type="button" onclick="addContato()">Salvar Contato</button>
-  </div>
+ <div id="contatoBox" class="box">
+  <h3>📇 Contatos</h3>
+
+  <input id="nome" placeholder="Nome">
+  <input id="telefone" placeholder="Telefone">
+  <button type="button" onclick="addContato()">Salvar Contato</button>
+
+  <hr>
+  <div id="listaContatos"></div>
+</div>
+
 
   <!-- AGENDAMENTOS -->
-  <div id="agendaBox" class="box">
-    <h3>📅 Novo Agendamento</h3>
-    <input id="cliente" placeholder="Cliente">
-    <input id="data" type="date">
-    <input id="hora" type="time">
-    <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
-  </div>
+<div id="agendaBox" class="box">
+  <h3>📅 Agendamentos</h3>
+
+  <input id="cliente" placeholder="Cliente">
+  <input id="data" type="date">
+  <input id="hora" type="time">
+  <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
+
+  <hr>
+  <div id="listaAgendamentos"></div>
+</div>
+
 
   <!-- VENDAS -->
   <div id="vendaBox" class="box">
-    <h3>💰 Nova Venda</h3>
-    <input id="vCliente" placeholder="Cliente">
-    <input id="vValor" type="number" placeholder="Valor">
-    <button type="button" onclick="addVenda()">Registrar Venda</button>
-  </div>
+  <h3>💰 Vendas</h3>
+
+  <input id="vCliente" placeholder="Cliente">
+  <input id="vValor" type="number" placeholder="Valor">
+  <button type="button" onclick="addVenda()">Registrar Venda</button>
+
+  <hr>
+  <div id="listaVendas"></div>
+</div>
+
 
   <!-- USUÁRIOS -->
   <div id="userBox" class="box">
@@ -141,7 +156,12 @@
 function abrir(id){
   document.querySelectorAll('.box').forEach(b => b.style.display = 'none');
   document.getElementById(id).style.display = 'block';
+
+  if(id === "contatoBox") listarContatos();
+  if(id === "agendaBox") listarAgendamentos();
+  if(id === "vendaBox") listarVendas();
 }
+</script>
 
 function salvarMeta(){
   if(!meta.value){
