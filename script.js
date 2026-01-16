@@ -1,37 +1,65 @@
-// ===== CONTATOS =====
-function addContato(){
-  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
+/* =========================
+   META
+========================= */
+function salvarMeta(){
+  const meta = document.getElementById("meta").value;
+  if(!meta){
+    alert("Informe a meta");
+    return;
+  }
+  localStorage.setItem("meta", meta);
+  alert("Meta salva com sucesso");
+}
 
-  let nome = document.getElementById("nome").value;
-  let telefone = document.getElementById("telefone").value;
+/* =========================
+   CONTATOS
+========================= */
+function addContato(){
+  const nome = document.getElementById("nome").value;
+  const telefone = document.getElementById("telefone").value;
 
   if(!nome || !telefone){
     alert("Preencha todos os campos");
     return;
   }
 
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
   contatos.push({ nome, telefone });
   localStorage.setItem("contatos", JSON.stringify(contatos));
 
   document.getElementById("nome").value = "";
   document.getElementById("telefone").value = "";
 
-  alert("Contato salvo com sucesso");
+  listarContatos();
 }
 
-// ===== AGENDAMENTOS =====
-function addAgendamento(){
-  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+function listarContatos(){
+  const lista = document.getElementById("listaContatos");
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
 
-  let cliente = document.getElementById("cliente").value;
-  let data = document.getElementById("data").value;
-  let hora = document.getElementById("hora").value;
+  lista.innerHTML = "";
+
+  contatos.forEach((c, i) => {
+    lista.innerHTML += `
+      <p><b>${i+1}.</b> ${c.nome} - ${c.telefone}</p>
+    `;
+  });
+}
+
+/* =========================
+   AGENDAMENTOS
+========================= */
+function addAgendamento(){
+  const cliente = document.getElementById("cliente").value;
+  const data = document.getElementById("data").value;
+  const hora = document.getElementById("hora").value;
 
   if(!cliente || !data || !hora){
     alert("Preencha todos os campos");
     return;
   }
 
+  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
   agendamentos.push({ cliente, data, hora });
   localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
 
@@ -39,138 +67,76 @@ function addAgendamento(){
   document.getElementById("data").value = "";
   document.getElementById("hora").value = "";
 
-  alert("Agendamento salvo");
+  listarAgendamentos();
 }
 
-// ===== VENDAS =====
-function addVenda(){
-  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+function listarAgendamentos(){
+  const lista = document.getElementById("listaAgendamentos");
+  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
 
-  let cliente = document.getElementById("vCliente").value;
-  let valor = document.getElementById("vValor").value;
+  lista.innerHTML = "";
+
+  agendamentos.forEach((a, i) => {
+    lista.innerHTML += `
+      <p><b>${i+1}.</b> ${a.cliente} | ${a.data} às ${a.hora}</p>
+    `;
+  });
+}
+
+/* =========================
+   VENDAS
+========================= */
+function addVenda(){
+  const cliente = document.getElementById("vCliente").value;
+  const valor = document.getElementById("vValor").value;
 
   if(!cliente || !valor){
     alert("Preencha todos os campos");
     return;
   }
 
-  vendas.push({ cliente, valor: Number(valor) });
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+  vendas.push({ cliente, valor });
   localStorage.setItem("vendas", JSON.stringify(vendas));
 
   document.getElementById("vCliente").value = "";
   document.getElementById("vValor").value = "";
 
-  alert("Venda registrada");
+  listarVendas();
 }
 
-// ===== USUÁRIOS =====
-function addUser(){
-  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+function listarVendas(){
+  const lista = document.getElementById("listaVendas");
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
-  let login = document.getElementById("uLogin").value;
-  let senha = document.getElementById("uSenha").value;
-  let tipo = document.getElementById("uTipo").value;
+  lista.innerHTML = "";
+
+  vendas.forEach((v, i) => {
+    lista.innerHTML += `
+      <p><b>${i+1}.</b> ${v.cliente} - R$ ${Number(v.valor).toFixed(2)}</p>
+    `;
+  });
+}
+
+/* =========================
+   USUÁRIOS
+========================= */
+function addUser(){
+  const login = document.getElementById("uLogin").value;
+  const senha = document.getElementById("uSenha").value;
+  const tipo = document.getElementById("uTipo").value;
 
   if(!login || !senha){
     alert("Preencha todos os campos");
     return;
   }
 
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
   usuarios.push({ login, senha, tipo });
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
   document.getElementById("uLogin").value = "";
   document.getElementById("uSenha").value = "";
 
-  alert("Usuário criado");
-}
-
-// ===== LOGOUT =====
-function sair(){
-  localStorage.removeItem("usuarioLogado");
-  location.href = "index.html";
-}
-
-// ===== LISTAR CONTATOS =====
-function listarContatos(){
-  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  let html = "";
-
-  contatos.forEach((c, i) => {
-    html += `
-      <p style="color:white">
-        ${c.nome} - ${c.telefone}
-        <button onclick="delContato(${i})">🗑</button>
-      </p>
-    `;
-  });
-
-  document.getElementById("listaContatos").innerHTML = html;
-}
-
-function delContato(i){
-  let contatos = JSON.parse(localStorage.getItem("contatos"));
-  contatos.splice(i,1);
-  localStorage.setItem("contatos", JSON.stringify(contatos));
-  listarContatos();
-}
-
-// ===== LISTAR AGENDAMENTOS =====
-function listarAgendamentos(){
-  let ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
-  let html = "";
-
-  ag.forEach((a, i) => {
-    html += `
-      <p style="color:white">
-        ${a.cliente} | ${a.data} ${a.hora}
-        <button onclick="delAg(${i})">🗑</button>
-      </p>
-    `;
-  });
-
-  document.getElementById("listaAgendamentos").innerHTML = html;
-}
-
-function delAg(i){
-  let ag = JSON.parse(localStorage.getItem("agendamentos"));
-  ag.splice(i,1);
-  localStorage.setItem("agendamentos", JSON.stringify(ag));
-  listarAgendamentos();
-}
-
-// ===== LISTAR VENDAS =====
-function listarVendas(){
-  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-  let html = "";
-
-  vendas.forEach((v, i) => {
-    html += `
-      <p style="color:white">
-        ${v.cliente} - R$ ${v.valor}
-        <button onclick="delVenda(${i})">🗑</button>
-      </p>
-    `;
-  });
-
-  document.getElementById("listaVendas").innerHTML = html;
-}
-
-function delVenda(i){
-  let vendas = JSON.parse(localStorage.getItem("vendas"));
-  vendas.splice(i,1);
-  localStorage.setItem("vendas", JSON.stringify(vendas));
-  listarVendas();
-}
-
-function salvarMeta(){
-  const meta = document.getElementById("meta");
-
-  if(!meta || !meta.value){
-    alert("Informe a meta");
-    return;
-  }
-
-  localStorage.setItem("meta", meta.value);
-  alert("Meta salva");
+  alert("Usuário criado com sucesso");
 }
