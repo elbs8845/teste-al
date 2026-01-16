@@ -8,7 +8,7 @@ function salvarMeta(){
     return;
   }
   localStorage.setItem("meta", meta);
-  alert("Meta salva com sucesso");
+  alert("Meta salva");
 }
 
 /* =========================
@@ -36,14 +36,38 @@ function addContato(){
 function listarContatos(){
   const lista = document.getElementById("listaContatos");
   let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-
   lista.innerHTML = "";
 
   contatos.forEach((c, i) => {
     lista.innerHTML += `
-      <p><b>${i+1}.</b> ${c.nome} - ${c.telefone}</p>
+      <p>
+        ${i+1}. ${c.nome} - ${c.telefone}
+        <button onclick="editarContato(${i})">✏️</button>
+        <button onclick="excluirContato(${i})">🗑️</button>
+      </p>
     `;
   });
+}
+
+function excluirContato(index){
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
+  contatos.splice(index, 1);
+  localStorage.setItem("contatos", JSON.stringify(contatos));
+  listarContatos();
+}
+
+function editarContato(index){
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
+  let c = contatos[index];
+
+  const novoNome = prompt("Editar nome:", c.nome);
+  const novoTelefone = prompt("Editar telefone:", c.telefone);
+
+  if(novoNome && novoTelefone){
+    contatos[index] = { nome: novoNome, telefone: novoTelefone };
+    localStorage.setItem("contatos", JSON.stringify(contatos));
+    listarContatos();
+  }
 }
 
 /* =========================
@@ -59,84 +83,5 @@ function addAgendamento(){
     return;
   }
 
-  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-  agendamentos.push({ cliente, data, hora });
-  localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+  let age
 
-  document.getElementById("cliente").value = "";
-  document.getElementById("data").value = "";
-  document.getElementById("hora").value = "";
-
-  listarAgendamentos();
-}
-
-function listarAgendamentos(){
-  const lista = document.getElementById("listaAgendamentos");
-  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-
-  lista.innerHTML = "";
-
-  agendamentos.forEach((a, i) => {
-    lista.innerHTML += `
-      <p><b>${i+1}.</b> ${a.cliente} | ${a.data} às ${a.hora}</p>
-    `;
-  });
-}
-
-/* =========================
-   VENDAS
-========================= */
-function addVenda(){
-  const cliente = document.getElementById("vCliente").value;
-  const valor = document.getElementById("vValor").value;
-
-  if(!cliente || !valor){
-    alert("Preencha todos os campos");
-    return;
-  }
-
-  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-  vendas.push({ cliente, valor });
-  localStorage.setItem("vendas", JSON.stringify(vendas));
-
-  document.getElementById("vCliente").value = "";
-  document.getElementById("vValor").value = "";
-
-  listarVendas();
-}
-
-function listarVendas(){
-  const lista = document.getElementById("listaVendas");
-  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
-  lista.innerHTML = "";
-
-  vendas.forEach((v, i) => {
-    lista.innerHTML += `
-      <p><b>${i+1}.</b> ${v.cliente} - R$ ${Number(v.valor).toFixed(2)}</p>
-    `;
-  });
-}
-
-/* =========================
-   USUÁRIOS
-========================= */
-function addUser(){
-  const login = document.getElementById("uLogin").value;
-  const senha = document.getElementById("uSenha").value;
-  const tipo = document.getElementById("uTipo").value;
-
-  if(!login || !senha){
-    alert("Preencha todos os campos");
-    return;
-  }
-
-  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-  usuarios.push({ login, senha, tipo });
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-  document.getElementById("uLogin").value = "";
-  document.getElementById("uSenha").value = "";
-
-  alert("Usuário criado com sucesso");
-}
