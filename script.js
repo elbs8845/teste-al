@@ -1,41 +1,18 @@
-// ===== BASE =====
-let usuarios = JSON.parse(localStorage.getItem("usuarios"));
+function addUser(){
+  let login = document.getElementById("uLogin").value.trim();
+  let senha = document.getElementById("uSenha").value.trim();
+  let tipo  = document.getElementById("uTipo").value;
 
-if(!usuarios){
-  usuarios = [
-    { login: "admin", senha: "123", tipo: "admin" }
-  ];
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-}
-
-let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
-// ===== LOGIN =====
-function login(){
-  let u = document.getElementById("login").value.trim();
-  let s = document.getElementById("senha").value.trim();
-
-  let user = usuarios.find(x => x.login === u && x.senha === s);
-
-  if(!user){
-    alert("Usuário ou senha inválidos");
+  if(!login || !senha){
+    alert("Preencha todos os campos");
     return;
   }
 
-  localStorage.setItem("logado", JSON.stringify(user));
+  usuarios.push({ login, senha, tipo });
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-  if(user.tipo === "admin"){
-    window.location.href = "dashboard.html";
-  } else {
-    window.location.href = "vendedor.html";
-  }
+  alert("Usuário salvo com sucesso");
+
+  document.getElementById("uLogin").value = "";
+  document.getElementById("uSenha").value = "";
 }
-
-// ===== LOGOUT =====
-function sair(){
-  localStorage.removeItem("logado");
-  window.location.href = "index.html";
-}
-
