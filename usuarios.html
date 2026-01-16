@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="card">
+    <h3>Novo Usuário</h3>
+    <input id="uLogin" placeholder="Login">
+    <input id="uSenha" placeholder="Senha">
+    <select id="uTipo">
+      <option value="admin">Admin</option>
+      <option value="vendedor">Vendedor</option>
+    </select>
+    <button onclick="addUser()">Salvar</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+function addUser(){
+  usuarios.push({
+    login:uLogin.value,
+    senha:uSenha.value,
+    tipo:uTipo.value
+  });
+  salvar("usuarios", usuarios);
+  alert("Usuário cadastrado");
+}
+</script>
