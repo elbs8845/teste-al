@@ -41,8 +41,27 @@ function addUser(){
 // ===== CONTATOS =====
 function addContato(){
   contatos.push({
-    nome:nome.value,
-    telefone:telefone.value,
-    status:"Lead"
+    nome: document.getElementById("nome").value,
+    telefone: document.getElementById("telefone").value,
+    status: "Lead"
   });
-  lo
+  localStorage.setItem("contatos", JSON.stringify(contatos));
+  listarContatos();
+}
+
+function listarContatos(){
+  let lista = document.getElementById("lista");
+  if(!lista) return;
+
+  lista.innerHTML = "";
+  contatos.forEach(c=>{
+    lista.innerHTML += `
+      <tr>
+        <td>${c.nome}</td>
+        <td>${c.telefone}</td>
+        <td>${c.status}</td>
+      </tr>
+    `;
+  });
+}
+
