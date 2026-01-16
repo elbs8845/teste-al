@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="card">
+    <h3>Novo Contato</h3>
+    <input id="nome" placeholder="Nome">
+    <input id="fone" placeholder="Telefone">
+    <button onclick="addContato()">Salvar</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+function addContato(){
+  contatos.push({nome:nome.value, fone:fone.value});
+  salvar("contatos", contatos);
+  alert("Contato salvo");
+}
+</script>
