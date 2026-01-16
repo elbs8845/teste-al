@@ -3,16 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>ALPHA SOLUÇÕES - Dashboard</title>
-
 <link rel="stylesheet" href="style.css">
 
 <style>
 body{
   margin:0;
-  font-family:Arial, Helvetica, sans-serif;
   display:flex;
+  font-family:Arial, sans-serif;
   background:#081a33;
-  color:#fff;
 }
 
 .sidebar{
@@ -26,8 +24,8 @@ body{
 }
 
 .sidebar h2{
+  color:white;
   text-align:center;
-  color:#fff;
   margin-bottom:20px;
 }
 
@@ -42,7 +40,7 @@ body{
 }
 
 .sidebar button:hover{
-  background:#ffa733;
+  background:#ff9f2d;
 }
 
 .content{
@@ -51,10 +49,10 @@ body{
 }
 
 .box{
-  display:none;
   background:#0f254a;
   padding:20px;
   border-radius:14px;
+  display:none;
   max-width:650px;
 }
 
@@ -72,25 +70,17 @@ body{
   border:none;
 }
 
-.box button{
-  background:#ff8c00;
-  color:#fff;
-  border:none;
-  padding:10px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.box button:hover{
-  background:#ffa733;
+.box hr{
+  margin:15px 0;
+  border:1px solid #1e3a6d;
 }
 
 footer{
   position:fixed;
   bottom:10px;
   right:20px;
+  color:#aaa;
   font-size:12px;
-  opacity:0.7;
 }
 </style>
 </head>
@@ -107,7 +97,7 @@ footer{
   <button onclick="abrir('vendaBox')">💰 Vendas</button>
   <button onclick="abrir('userBox')">👤 Usuários</button>
 
-  <hr style="border:1px solid #1e3a6d;width:100%">
+  <hr style="border:1px solid #1e3a6d">
 
   <button onclick="sair()">🚪 Sair</button>
 </div>
@@ -119,20 +109,70 @@ footer{
   <div id="metaBox" class="box">
     <h3>🎯 Meta Mensal</h3>
     <input id="meta" type="number" placeholder="Valor da meta">
-    <button onclick="salvarMeta()">Salvar Meta</button>
+    <button type="button" onclick="salvarMeta()">Salvar Meta</button>
   </div>
 
   <!-- CONTATOS -->
   <div id="contatoBox" class="box">
     <h3>📇 Contatos</h3>
-
     <input id="nome" placeholder="Nome">
     <input id="telefone" placeholder="Telefone">
-    <button onclick="addContato()">Salvar Contato</button>
-
+    <button type="button" onclick="addContato()">Salvar Contato</button>
     <hr>
     <div id="listaContatos"></div>
   </div>
 
   <!-- AGENDAMENTOS -->
-  <div id=
+  <div id="agendaBox" class="box">
+    <h3>📅 Agendamentos</h3>
+    <input id="cliente" placeholder="Cliente">
+    <input id="data" type="date">
+    <input id="hora" type="time">
+    <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
+    <hr>
+    <div id="listaAgendamentos"></div>
+  </div>
+
+  <!-- VENDAS -->
+  <div id="vendaBox" class="box">
+    <h3>💰 Vendas</h3>
+    <input id="vCliente" placeholder="Cliente">
+    <input id="vValor" type="number" placeholder="Valor">
+    <button type="button" onclick="addVenda()">Registrar Venda</button>
+    <hr>
+    <div id="listaVendas"></div>
+  </div>
+
+  <!-- USUÁRIOS -->
+  <div id="userBox" class="box">
+    <h3>👤 Novo Usuário</h3>
+    <input id="uLogin" placeholder="Login">
+    <input id="uSenha" type="password" placeholder="Senha">
+    <select id="uTipo">
+      <option value="vendedor">Vendedor</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="button" onclick="addUser()">Criar Usuário</button>
+  </div>
+
+</div>
+
+<footer>Desenvolvido por ELBS_</footer>
+
+<!-- JS GLOBAL -->
+<script>
+function abrir(id){
+  document.querySelectorAll('.box').forEach(b => b.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+
+  if(id === "contatoBox") listarContatos();
+  if(id === "agendaBox") listarAgendamentos();
+  if(id === "vendaBox") listarVendas();
+}
+</script>
+
+<script src="login.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
