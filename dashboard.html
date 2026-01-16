@@ -1,64 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard - ALPHA SOLUÇÕES</title>
+<title>ALPHA SOLUÇÕES - Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
-<script>
-let user = JSON.parse(localStorage.getItem("logado"));
-if(!user || user.tipo !== "admin"){
-  location.href = "index.html";
-}
-</script>
 
-<header>
+<div class="card" style="width:900px; max-width:95%;">
   <h1>ALPHA <span>SOLUÇÕES</span></h1>
-  <button onclick="sair()">Sair</button>
-</header>
+  <p style="color:#ccc;">Painel Administrativo</p>
 
-<div class="container">
-
-  <div class="card">
-    <h2>Dashboard</h2>
-    <p>Meta mensal: <b>R$ 300.000</b></p>
-  </div>
-
-  <div class="menu">
-
-    <div class="card" onclick="location.href='usuarios.html'">
-      <h3>Usuários</h3>
-      <p>Cadastro e permissões</p>
-    </div>
-
-    <div class="card" onclick="location.href='contatos.html'">
-      <h3>Contatos</h3>
-      <p>CRM de leads</p>
-    </div>
-
-    <div class="card" onclick="location.href='agendamentos.html'">
-      <h3>Agendamentos</h3>
-      <p>Estrutura pronta</p>
-    </div>
-
-    <div class="card" onclick="location.href='vendas.html'">
-      <h3>Vendas</h3>
-      <p>Controle e metas</p>
-    </div>
-
-    <div class="card" onclick="location.href='relatorios.html'">
-      <h3>Relatórios</h3>
-      <p>Excel e PDF</p>
-    </div>
-
-  </div>
-
-</div>
-
-<footer>ALPHA SOLUÇÕES | Desenvolvido por ELBS_</footer>
-
-<script src="script.js"></script>
-</body>
-</html>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,
