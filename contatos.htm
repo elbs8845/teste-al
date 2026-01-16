@@ -1,17 +1,19 @@
-<div class="container">
-  <div class="card">
-    <h3>Novo Contato</h3>
-    <input id="nome" placeholder="Nome">
-    <input id="fone" placeholder="Telefone">
-    <button onclick="addContato()">Salvar</button>
-  </div>
-</div>
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>Contatos</title>
+<link rel="stylesheet" href="style.css">
+</head><body onload="listarContatos()">
+
+<script>
+if(!localStorage.getItem("logado")) location.href="index.html";
+</script>
+
+<h2>CRM de Leads</h2>
+<input id="nome" placeholder="Nome">
+<input id="telefone" placeholder="Telefone">
+<button onclick="addContato()">Adicionar</button>
+
+<ul id="lista"></ul>
 
 <script src="script.js"></script>
-<script>
-function addContato(){
-  contatos.push({nome:nome.value, fone:fone.value});
-  salvar("contatos", contatos);
-  alert("Contato salvo");
-}
-</script>
+</body></html>
