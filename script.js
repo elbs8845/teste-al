@@ -11,8 +11,8 @@ function login(){
   localStorage.setItem("logado", JSON.stringify(user));
 
   if(user.tipo === "admin"){
-    location.href = "dashboard.html";
+    window.location.href = "dashboard.html";
   } else {
-    location.href = "vendedor.html";
+    window.location.href = "vendedor.html";
   }
 }
