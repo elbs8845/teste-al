@@ -15,8 +15,10 @@ if(!usuarios || usuarios.length === 0){
 
 // ===== LOGIN =====
 function login(){
-  let u = document.getElementById("login").value.trim();
-  let s = document.getElementById("senha").value.trim();
+  let u = usuario.value;
+  let s = senha.value;
+
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
   let user = usuarios.find(x => x.login === u && x.senha === s);
 
@@ -25,13 +27,8 @@ function login(){
     return;
   }
 
-  localStorage.setItem("logado", JSON.stringify(user));
-
-  if(user.tipo === "admin"){
-    window.location.href = "dashboard.html";
-  } else {
-    window.location.href = "vendedor.html";
-  }
+  localStorage.setItem("usuarioLogado", JSON.stringify(user));
+  location.href = "dashboard.html";
 }
 
 // ===== LOGOUT =====
