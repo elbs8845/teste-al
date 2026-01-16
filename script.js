@@ -90,3 +90,75 @@ function sair(){
   localStorage.removeItem("usuarioLogado");
   location.href = "index.html";
 }
+
+// ===== LISTAR CONTATOS =====
+function listarContatos(){
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
+  let html = "";
+
+  contatos.forEach((c, i) => {
+    html += `
+      <p style="color:white">
+        ${c.nome} - ${c.telefone}
+        <button onclick="delContato(${i})">🗑</button>
+      </p>
+    `;
+  });
+
+  document.getElementById("listaContatos").innerHTML = html;
+}
+
+function delContato(i){
+  let contatos = JSON.parse(localStorage.getItem("contatos"));
+  contatos.splice(i,1);
+  localStorage.setItem("contatos", JSON.stringify(contatos));
+  listarContatos();
+}
+
+// ===== LISTAR AGENDAMENTOS =====
+function listarAgendamentos(){
+  let ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
+  let html = "";
+
+  ag.forEach((a, i) => {
+    html += `
+      <p style="color:white">
+        ${a.cliente} | ${a.data} ${a.hora}
+        <button onclick="delAg(${i})">🗑</button>
+      </p>
+    `;
+  });
+
+  document.getElementById("listaAgendamentos").innerHTML = html;
+}
+
+function delAg(i){
+  let ag = JSON.parse(localStorage.getItem("agendamentos"));
+  ag.splice(i,1);
+  localStorage.setItem("agendamentos", JSON.stringify(ag));
+  listarAgendamentos();
+}
+
+// ===== LISTAR VENDAS =====
+function listarVendas(){
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+  let html = "";
+
+  vendas.forEach((v, i) => {
+    html += `
+      <p style="color:white">
+        ${v.cliente} - R$ ${v.valor}
+        <button onclick="delVenda(${i})">🗑</button>
+      </p>
+    `;
+  });
+
+  document.getElementById("listaVendas").innerHTML = html;
+}
+
+function delVenda(i){
+  let vendas = JSON.parse(localStorage.getItem("vendas"));
+  vendas.splice(i,1);
+  localStorage.setItem("vendas", JSON.stringify(vendas));
+  listarVendas();
+}
