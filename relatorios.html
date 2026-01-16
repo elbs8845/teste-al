@@ -1,19 +1,16 @@
-<div class="container">
-  <div class="card">
-    <h3>Relatórios</h3>
-    <button onclick="exportExcel()">Exportar Excel</button>
-    <button onclick="window.print()">Gerar PDF</button>
-  </div>
-</div>
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>Relatórios</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<script>
+if(!localStorage.getItem("logado")) location.href="index.html";
+</script>
+
+<h2>Relatórios</h2>
+<button onclick="exportExcel()">Exportar Excel</button>
+<button onclick="window.print()">Gerar PDF</button>
 
 <script src="script.js"></script>
-<script>
-function exportExcel(){
-  let csv = "Cliente,Valor\n";
-  vendas.forEach(v => csv += `${v.cliente},${v.valor}\n`);
-  let a = document.createElement("a");
-  a.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
-  a.download = "relatorio.csv";
-  a.click();
-}
-</script>
+</body></html>
