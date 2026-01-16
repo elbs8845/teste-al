@@ -174,14 +174,3 @@ function salvarMeta(){
   localStorage.setItem("meta", meta.value);
   alert("Meta salva");
 }
-function salvarMeta(){
-  const meta = document.getElementById("meta");
-
-  if(!meta || !meta.value){
-    alert("Informe a meta");
-    return;
-  }
-
-  localStorage.setItem("meta", meta.value);
-  alert("Meta salva");
-}
