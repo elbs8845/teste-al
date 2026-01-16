@@ -1,8 +1,21 @@
-function login(){
-  let u = document.getElementById("login").value;
-  let s = document.getElementById("senha").value;
+// USUÁRIOS PADRÃO
+let usuarios = JSON.parse(localStorage.getItem("usuarios"));
+
+if(!usuarios){
+  usuarios = [
+    { login: "admin", senha: "123", tipo: "admin" }
+  ];
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+}
+
+// LOGIN
+document.getElementById("btnLogin").addEventListener("click", function(){
+
+  let u = document.getElementById("login").value.trim();
+  let s = document.getElementById("senha").value.trim();
 
   let user = usuarios.find(x => x.login === u && x.senha === s);
+
   if(!user){
     alert("Usuário ou senha inválidos");
     return;
@@ -15,4 +28,10 @@ function login(){
   } else {
     window.location.href = "vendedor.html";
   }
+});
+
+// LOGOUT
+function sair(){
+  localStorage.removeItem("logado");
+  window.location.href = "index.html";
 }
