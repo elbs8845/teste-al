@@ -1,19 +1,60 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
 <meta charset="UTF-8">
-<title>Contatos</title>
+<title>Contatos - ALPHA SOLUÇÕES</title>
 <link rel="stylesheet" href="style.css">
-</head><body onload="listarContatos()">
+</head>
+<body>
 
 <script>
-if(!localStorage.getItem("logado")) location.href="index.html";
+let user = JSON.parse(localStorage.getItem("logado"));
+if(!user){
+  location.href = "index.html";
+}
 </script>
 
-<h2>CRM de Leads</h2>
-<input id="nome" placeholder="Nome">
-<input id="telefone" placeholder="Telefone">
-<button onclick="addContato()">Adicionar</button>
+<header>
+  <h1>Contatos | CRM de Leads</h1>
+  <button onclick="sair()">Sair</button>
+</header>
 
-<ul id="lista"></ul>
+<div class="container">
+
+  <div class="card">
+    <h3>Novo Lead</h3>
+    <input id="nome" placeholder="Nome do cliente">
+    <input id="telefone" placeholder="Telefone / WhatsApp">
+    <button onclick="addContato()">Salvar Lead</button>
+  </div>
+
+  <div class="card">
+    <h3>Leads Cadastrados</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="lista">
+        <!-- Leads aparecem aqui -->
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  ALPHA SOLUÇÕES | Desenvolvido por ELBS_
+</footer>
 
 <script src="script.js"></script>
-</body></html>
+
+<script>
+listarContatos();
+</script>
+
+</body>
+</html>
