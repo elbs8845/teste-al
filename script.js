@@ -119,7 +119,7 @@ function listarVendas(){
 }
 
 /* =========================
-   USUÁRIOS
+   USUÁRIOS (ADMIN / VENDEDOR)
 ========================= */
 function addUser(){
   const login = document.getElementById("uLogin").value;
@@ -132,11 +132,45 @@ function addUser(){
   }
 
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  // evita login duplicado
+  if(usuarios.some(u => u.login === login)){
+    alert("Usuário já existe");
+    return;
+  }
+
   usuarios.push({ login, senha, tipo });
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
   document.getElementById("uLogin").value = "";
   document.getElementById("uSenha").value = "";
 
-  alert("Usuário criado com sucesso");
+  listarUsuarios();
+}
+
+function listarUsuarios(){
+  const lista = document.getElementById("listaUsuarios");
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  lista.innerHTML = "";
+
+  usuarios.forEach((u, i) => {
+    lista.innerHTML += `
+      <p>
+        👤 <b>${u.login}</b> 
+        <span style="color:#ff8c00">(${u.tipo})</span>
+        <button onclick="excluirUsuario(${i})">🗑️</button>
+      </p>
+    `;
+  });
+}
+
+function excluirUsuario(index){
+  if(!confirm("Deseja excluir este usuário?")) return;
+
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  usuarios.splice(index, 1);
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+  listarUsuarios();
 }
