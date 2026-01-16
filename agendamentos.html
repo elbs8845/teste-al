@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>Agendamentos</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<script>
+if(!localStorage.getItem("logado")) location.href="index.html";
+</script>
+
+<h2>Agendamentos</h2>
+<input id="cliente" placeholder="Cliente">
+<input id="data" type="date">
+<input id="hora" type="time">
+<button onclick="addAgendamento()">Salvar</button>
+
+<script src="script.js"></script>
+</body></html>
