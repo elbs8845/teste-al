@@ -4,115 +4,26 @@
 <meta charset="UTF-8">
 <title>ALPHA SOLUÇÕES - Dashboard</title>
 <link rel="stylesheet" href="style.css">
-<style>
-  .topo {
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
-    margin-bottom:25px;
-  }
-  .box {
-    background:#0f254a;
-    padding:20px;
-    border-radius:14px;
-    display:none;
-  }
-  .box h3 {
-    color:#ff8c00;
-    margin-bottom:15px;
-  }
-  .box input, .box select {
-    width:100%;
-    padding:10px;
-    margin-bottom:10px;
-    border-radius:8px;
-    border:none;
-  }
-</style>
 </head>
 <body>
 
-<div class="card" style="width:1100px; max-width:95%;">
-  <h1>ALPHA <span>SOLUÇÕES</span></h1>
+<div class="navbar">
+  <button onclick="location.href='meta.html'">Meta</button>
+  <button onclick="location.href='contatos.html'">Contatos</button>
+  <button onclick="location.href='agendamentos.html'">Agendamentos</button>
+  <button onclick="location.href='vendas.html'">Vendas</button>
+  <button onclick="location.href='usuarios.html'">Usuários</button>
+  <button onclick="sair()">Sair</button>
+</div>
 
-  <!-- MENU TOPO -->
-  <div class="topo">
-    <button onclick="abrir('metaBox')">Meta</button>
-    <button onclick="abrir('contatoBox')">Contatos</button>
-    <button onclick="abrir('agendaBox')">Agendamentos</button>
-    <button onclick="abrir('vendaBox')">Vendas</button>
-    <button onclick="abrir('userBox')">Usuários</button>
-    <button onclick="sair()">Sair</button>
-  </div>
-
-  <!-- META -->
-  <div id="metaBox" class="box">
-    <h3>🎯 Meta Mensal</h3>
-    <input id="meta" type="number" placeholder="Valor da meta">
-    <button type="button" onclick="salvarMeta()">Salvar Meta</button>
-  </div>
-
-  <!-- CONTATOS -->
-  <div id="contatoBox" class="box">
-    <h3>📇 Novo Contato</h3>
-    <input id="nome" placeholder="Nome">
-    <input id="telefone" placeholder="Telefone">
-    <button type="button" onclick="addContato()">Salvar Contato</button>
-  </div>
-
-  <!-- AGENDAMENTOS -->
-  <div id="agendaBox" class="box">
-    <h3>📅 Novo Agendamento</h3>
-    <input id="cliente" placeholder="Cliente">
-    <input id="data" type="date">
-    <input id="hora" type="time">
-    <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
-  </div>
-
-  <!-- VENDAS -->
-  <div id="vendaBox" class="box">
-    <h3>💰 Nova Venda</h3>
-    <input id="vCliente" placeholder="Cliente">
-    <input id="vValor" type="number" placeholder="Valor">
-    <button type="button" onclick="addVenda()">Registrar Venda</button>
-  </div>
-
-  <!-- USUÁRIOS -->
-  <div id="userBox" class="box">
-    <h3>👤 Novo Usuário</h3>
-    <input id="uLogin" placeholder="Login">
-    <input id="uSenha" placeholder="Senha">
-    <select id="uTipo">
-      <option value="vendedor">Vendedor</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button type="button" onclick="addUser()">Criar Usuário</button>
-  </div>
-
+<div class="container">
+  <h2 style="color:white;text-align:center;">
+    Bem-vindo ao ALPHA SOLUÇÕES
+  </h2>
 </div>
 
 <footer>Desenvolvido por ELBS_</footer>
 
 <script src="login.js"></script>
-<script src="script.js"></script>
-
-<script>
-function abrir(id){
-  document.querySelectorAll('.box').forEach(b => b.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
-}
-
-function salvarMeta(){
-  if(!meta.value){
-    alert("Informe a meta");
-    return;
-  }
-  localStorage.setItem("meta", meta.value);
-  alert("Meta salva");
-}
-</script>
-
 </body>
 </html>
-
