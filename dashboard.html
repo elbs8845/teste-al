@@ -4,68 +4,87 @@
 <meta charset="UTF-8">
 <title>ALPHA SOLUÇÕES - Dashboard</title>
 <link rel="stylesheet" href="style.css">
+
 <style>
-  body {
-    display:flex;
-  }
+body{
+  margin:0;
+  display:flex;
+  font-family:Arial, sans-serif;
+  background:#081a33;
+}
 
-  .sidebar {
-    width:220px;
-    background:#0b1d39;
-    min-height:100vh;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
+.sidebar{
+  width:220px;
+  background:#0b1d39;
+  min-height:100vh;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
 
-  .sidebar h2 {
-    color:white;
-    text-align:center;
-    margin-bottom:20px;
-  }
+.sidebar h2{
+  color:white;
+  text-align:center;
+  margin-bottom:20px;
+}
 
-  .sidebar button {
-    background:#ff8c00;
-    color:#fff;
-    border:none;
-    padding:12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:14px;
-  }
+.sidebar button{
+  background:#ff8c00;
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:14px;
+}
 
-  .sidebar button:hover {
-    background:#ff9f2d;
-  }
+.sidebar button:hover{
+  background:#ff9f2d;
+}
 
-  .content {
-    flex:1;
-    padding:30px;
-  }
+.content{
+  flex:1;
+  padding:30px;
+}
 
-  .box {
-    background:#0f254a;
-    padding:20px;
-    border-radius:14px;
-    display:none;
-    max-width:600px;
-  }
+.box{
+  background:#0f254a;
+  padding:20px;
+  border-radius:14px;
+  display:none;
+  max-width:650px;
+}
 
-  .box h3 {
-    color:#ff8c00;
-    margin-bottom:15px;
-  }
+.box h3{
+  color:#ff8c00;
+  margin-bottom:15px;
+}
 
-  .box input, .box select {
-    width:100%;
-    padding:10px;
-    margin-bottom:10px;
-    border-radius:8px;
-    border:none;
-  }
+.box input,
+.box select{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:8px;
+  border:none;
+}
+
+.box hr{
+  margin:15px 0;
+  border:1px solid #1e3a6d;
+}
+
+footer{
+  position:fixed;
+  bottom:10px;
+  right:20px;
+  color:#aaa;
+  font-size:12px;
+}
 </style>
 </head>
+
 <body>
 
 <!-- MENU LATERAL -->
@@ -78,7 +97,7 @@
   <button onclick="abrir('vendaBox')">💰 Vendas</button>
   <button onclick="abrir('userBox')">👤 Usuários</button>
 
-  <hr style="width:100%;border:1px solid #1e3a6d">
+  <hr style="border:1px solid #1e3a6d">
 
   <button onclick="sair()">🚪 Sair</button>
 </div>
@@ -87,57 +106,48 @@
 <div class="content">
 
   <!-- META -->
- <div id="metaBox" class="box">
-  <h3>🎯 Meta Mensal</h3>
-  <input id="meta" type="number" placeholder="Valor da meta">
-  <button type="button" onclick="salvarMeta()">Salvar Meta</button>
-</div>
+  <div id="metaBox" class="box">
+    <h3>🎯 Meta Mensal</h3>
+    <input id="meta" type="number" placeholder="Valor da meta">
+    <button type="button" onclick="salvarMeta()">Salvar Meta</button>
+  </div>
 
   <!-- CONTATOS -->
- <div id="contatoBox" class="box">
-  <h3>📇 Contatos</h3>
-
-  <input id="nome" placeholder="Nome">
-  <input id="telefone" placeholder="Telefone">
-  <button type="button" onclick="addContato()">Salvar Contato</button>
-
-  <hr>
-  <div id="listaContatos"></div>
-</div>
-
+  <div id="contatoBox" class="box">
+    <h3>📇 Contatos</h3>
+    <input id="nome" placeholder="Nome">
+    <input id="telefone" placeholder="Telefone">
+    <button type="button" onclick="addContato()">Salvar Contato</button>
+    <hr>
+    <div id="listaContatos"></div>
+  </div>
 
   <!-- AGENDAMENTOS -->
-<div id="agendaBox" class="box">
-  <h3>📅 Agendamentos</h3>
-
-  <input id="cliente" placeholder="Cliente">
-  <input id="data" type="date">
-  <input id="hora" type="time">
-  <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
-
-  <hr>
-  <div id="listaAgendamentos"></div>
-</div>
-
+  <div id="agendaBox" class="box">
+    <h3>📅 Agendamentos</h3>
+    <input id="cliente" placeholder="Cliente">
+    <input id="data" type="date">
+    <input id="hora" type="time">
+    <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
+    <hr>
+    <div id="listaAgendamentos"></div>
+  </div>
 
   <!-- VENDAS -->
   <div id="vendaBox" class="box">
-  <h3>💰 Vendas</h3>
-
-  <input id="vCliente" placeholder="Cliente">
-  <input id="vValor" type="number" placeholder="Valor">
-  <button type="button" onclick="addVenda()">Registrar Venda</button>
-
-  <hr>
-  <div id="listaVendas"></div>
-</div>
-
+    <h3>💰 Vendas</h3>
+    <input id="vCliente" placeholder="Cliente">
+    <input id="vValor" type="number" placeholder="Valor">
+    <button type="button" onclick="addVenda()">Registrar Venda</button>
+    <hr>
+    <div id="listaVendas"></div>
+  </div>
 
   <!-- USUÁRIOS -->
   <div id="userBox" class="box">
     <h3>👤 Novo Usuário</h3>
     <input id="uLogin" placeholder="Login">
-    <input id="uSenha" placeholder="Senha">
+    <input id="uSenha" type="password" placeholder="Senha">
     <select id="uTipo">
       <option value="vendedor">Vendedor</option>
       <option value="admin">Admin</option>
@@ -149,12 +159,7 @@
 
 <footer>Desenvolvido por ELBS_</footer>
 
-<script src="login.js"></script>
-<script src="script.js"></script>
-
-
-<footer>Desenvolvido por ELBS_</footer>
-
+<!-- JS GLOBAL -->
 <script>
 function abrir(id){
   document.querySelectorAll('.box').forEach(b => b.style.display = 'none');
@@ -168,5 +173,6 @@ function abrir(id){
 
 <script src="login.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
