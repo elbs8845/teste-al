@@ -1,23 +1,8 @@
-<!DOCTYPE html><html><head>
-<meta charset="UTF-8">
-<title>Usuários</title>
-<link rel="stylesheet" href="style.css">
-</head><body>
-
-<script>
-let u=JSON.parse(localStorage.getItem("logado"));
-if(!u || u.tipo!=="admin") location.href="index.html";
-</script>
-
-<h2>Cadastro de Usuários</h2>
 <input id="uLogin" placeholder="Login">
 <input id="uSenha" placeholder="Senha">
 <select id="uTipo">
   <option value="admin">Admin</option>
   <option value="vendedor">Vendedor</option>
 </select>
-<button type="button" onclick="addContato()">Salvar</button>
 
-
-<script src="script.js"></script>
-</body></html>
+<button type="button" onclick="addUser()">Salvar</button>
