@@ -1,17 +1,17 @@
-<div class="container">
-  <div class="card">
-    <h3>Registrar Venda</h3>
-    <input id="cliente" placeholder="Cliente">
-    <input id="valor" type="number" placeholder="Valor">
-    <button onclick="addVenda()">Registrar</button>
-  </div>
-</div>
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>Vendas</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<script>
+if(!localStorage.getItem("logado")) location.href="index.html";
+</script>
+
+<h2>Vendas</h2>
+<input id="vCliente" placeholder="Cliente">
+<input id="vValor" type="number" placeholder="Valor">
+<button onclick="addVenda()">Registrar</button>
 
 <script src="script.js"></script>
-<script>
-function addVenda(){
-  vendas.push({cliente:cliente.value, valor:valor.value});
-  salvar("vendas", vendas);
-  alert("Venda registrada");
-}
-</script>
+</body></html>
