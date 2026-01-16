@@ -1,3 +1,8 @@
+let logado = JSON.parse(localStorage.getItem("logado"));
+if(!logado){
+  window.location.href = "index.html";
+}
+
 // ===== USUÁRIOS BASE =====
 let usuarios = JSON.parse(localStorage.getItem("usuarios"));
 
