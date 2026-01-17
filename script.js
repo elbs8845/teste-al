@@ -41,9 +41,19 @@ function listarContatos(){
 
   contatos.forEach((c, i) => {
     lista.innerHTML += `
-      <p><b>${i+1}.</b> ${c.nome} - ${c.telefone}</p>
+      <p>
+        <b>${i+1}.</b> ${c.nome} - ${c.telefone}
+        <button onclick="excluirContato(${i})">🗑️</button>
+      </p>
     `;
   });
+}
+
+function excluirContato(index){
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
+  contatos.splice(index, 1);
+  localStorage.setItem("contatos", JSON.stringify(contatos));
+  listarContatos();
 }
 
 /* =========================
@@ -78,9 +88,19 @@ function listarAgendamentos(){
 
   agendamentos.forEach((a, i) => {
     lista.innerHTML += `
-      <p><b>${i+1}.</b> ${a.cliente} | ${a.data} às ${a.hora}</p>
+      <p>
+        <b>${i+1}.</b> ${a.cliente} | ${a.data} às ${a.hora}
+        <button onclick="excluirAgendamento(${i})">🗑️</button>
+      </p>
     `;
   });
+}
+
+function excluirAgendamento(index){
+  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+  agendamentos.splice(index, 1);
+  localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+  listarAgendamentos();
 }
 
 /* =========================
@@ -113,9 +133,19 @@ function listarVendas(){
 
   vendas.forEach((v, i) => {
     lista.innerHTML += `
-      <p><b>${i+1}.</b> ${v.cliente} - R$ ${Number(v.valor).toFixed(2)}</p>
+      <p>
+        <b>${i+1}.</b> ${v.cliente} - R$ ${Number(v.valor).toFixed(2)}
+        <button onclick="excluirVenda(${i})">🗑️</button>
+      </p>
     `;
   });
+}
+
+function excluirVenda(index){
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+  vendas.splice(index, 1);
+  localStorage.setItem("vendas", JSON.stringify(vendas));
+  listarVendas();
 }
 
 /* =========================
@@ -133,7 +163,6 @@ function addUser(){
 
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-  // evita login duplicado
   if(usuarios.some(u => u.login === login)){
     alert("Usuário já existe");
     return;
@@ -171,6 +200,6 @@ function excluirUsuario(index){
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
   usuarios.splice(index, 1);
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
   listarUsuarios();
 }
+
