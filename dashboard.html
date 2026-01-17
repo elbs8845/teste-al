@@ -144,21 +144,25 @@ footer{
   </div>
 
   <!-- USUÁRIOS -->
-  <div id="userBox" class="box">
-    <h3>👤 Novo Usuário</h3>
-    <input id="uLogin" placeholder="Login">
-    <input id="uSenha" type="password" placeholder="Senha">
-    <select id="uTipo">
-      <option value="vendedor">Vendedor</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button type="button" onclick="addUser()">Criar Usuário</button>
-  </div>
-<hr>
-<h4>Usuários Cadastrados</h4>
-<div id="listaUsuarios"></div>
+<div id="userBox" class="box">
+  <h3>👤 Novo Usuário</h3>
 
+  <input id="uLogin" placeholder="Login">
+  <input id="uSenha" placeholder="Senha">
+
+  <select id="uTipo">
+    <option value="vendedor">Vendedor</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <button onclick="addUser()">Criar Usuário</button>
+
+  <hr>
+
+  <h4>Usuários Cadastrados</h4>
+  <div id="listaUsuarios"></div>
 </div>
+
 
 <footer>Desenvolvido por ELBS_</footer>
 
