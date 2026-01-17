@@ -1,15 +1,21 @@
-/* =========================
-   USUÁRIO LOGADO
-========================= */
+/********************************
+  CONTROLE DE SESSÃO
+********************************/
 function getUsuario(){
-  return JSON.parse(localStorage.getItem("usuarioLogado"));
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if(!usuario){
+    alert("Sessão expirada. Faça login novamente.");
+    location.href = "index.html";
+    return null;
+  }
+  return usuario;
 }
 
-/* =========================
-   META
-========================= */
+/********************************
+  META
+********************************/
 function salvarMeta(){
-  const meta = document.getElementById("meta").value;
+  const meta = document.getElementById("meta")?.value;
   if(!meta){
     alert("Informe a meta");
     return;
@@ -18,9 +24,9 @@ function salvarMeta(){
   alert("Meta salva com sucesso");
 }
 
-/* =========================
-   CONTATOS
-========================= */
+/********************************
+  CONTATOS
+********************************/
 function addContato(){
   const nome = document.getElementById("nome").value;
   const telefone = document.getElementById("telefone").value;
@@ -42,8 +48,9 @@ function addContato(){
 
 function listarContatos(){
   const lista = document.getElementById("listaContatos");
-  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
+  if(!lista) return;
 
+  let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
   lista.innerHTML = "";
 
   contatos.forEach((c, i) => {
@@ -63,9 +70,9 @@ function excluirContato(index){
   listarContatos();
 }
 
-/* =========================
-   AGENDAMENTOS
-========================= */
+/********************************
+  AGENDAMENTOS
+********************************/
 function addAgendamento(){
   const cliente = document.getElementById("cliente").value;
   const data = document.getElementById("data").value;
@@ -89,8 +96,9 @@ function addAgendamento(){
 
 function listarAgendamentos(){
   const lista = document.getElementById("listaAgendamentos");
-  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+  if(!lista) return;
 
+  let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
   lista.innerHTML = "";
 
   agendamentos.forEach((a, i) => {
@@ -110,13 +118,15 @@ function excluirAgendamento(index){
   listarAgendamentos();
 }
 
-/* =========================
-   VENDAS (CONTROLE ADMIN / VENDEDOR)
-========================= */
+/********************************
+  VENDAS (ADMIN / VENDEDOR)
+********************************/
 function addVenda(){
+  const usuario = getUsuario();
+  if(!usuario) return;
+
   const cliente = document.getElementById("vCliente").value;
   const valor = document.getElementById("vValor").value;
-  const usuario = getUsuario();
 
   if(!cliente || !valor){
     alert("Preencha todos os campos");
@@ -127,7 +137,7 @@ function addVenda(){
 
   vendas.push({
     cliente,
-    valor,
+    valor: Number(valor),
     vendedor: usuario.login
   });
 
@@ -141,22 +151,20 @@ function addVenda(){
 
 function listarVendas(){
   const lista = document.getElementById("listaVendas");
-  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+  if(!lista) return;
+
   const usuario = getUsuario();
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
   lista.innerHTML = "";
 
   vendas.forEach((v, i) => {
-
-    // vendedor só vê as próprias vendas
-    if(usuario.tipo === "vendedor" && v.vendedor !== usuario.login){
-      return;
-    }
+    if(usuario.tipo === "vendedor" && v.vendedor !== usuario.login) return;
 
     lista.innerHTML += `
       <p>
-        <b>${i+1}.</b> ${v.cliente} - R$ ${Number(v.valor).toFixed(2)}
-        <span style="color:#ff8c00">(${v.vendedor})</span>
+        <b>${v.cliente}</b> - R$ ${v.valor.toFixed(2)}
+        <span style="color:#aaa">(${v.vendedor})</span>
         <button onclick="excluirVenda(${i})">🗑️</button>
       </p>
     `;
@@ -167,7 +175,6 @@ function excluirVenda(index){
   const usuario = getUsuario();
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
-  // vendedor não pode excluir venda de outro
   if(usuario.tipo === "vendedor" && vendas[index].vendedor !== usuario.login){
     alert("Você não pode excluir vendas de outro vendedor");
     return;
@@ -178,10 +185,16 @@ function excluirVenda(index){
   listarVendas();
 }
 
-/* =========================
-   USUÁRIOS (ADMIN / VENDEDOR)
-========================= */
+/********************************
+  USUÁRIOS (ADMIN)
+********************************/
 function addUser(){
+  const usuario = getUsuario();
+  if(usuario.tipo !== "admin"){
+    alert("Acesso negado");
+    return;
+  }
+
   const login = document.getElementById("uLogin").value;
   const senha = document.getElementById("uSenha").value;
   const tipo = document.getElementById("uTipo").value;
@@ -209,8 +222,9 @@ function addUser(){
 
 function listarUsuarios(){
   const lista = document.getElementById("listaUsuarios");
-  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  if(!lista) return;
 
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
   lista.innerHTML = "";
 
   usuarios.forEach((u, i) => {
@@ -232,3 +246,13 @@ function excluirUsuario(index){
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   listarUsuarios();
 }
+
+/********************************
+  AUTO LOAD
+********************************/
+document.addEventListener("DOMContentLoaded", () => {
+  listarContatos();
+  listarAgendamentos();
+  listarVendas();
+  listarUsuarios();
+});
