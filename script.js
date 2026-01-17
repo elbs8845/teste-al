@@ -1,4 +1,11 @@
 /* =========================
+   USUÁRIO LOGADO
+========================= */
+function getUsuario(){
+  return JSON.parse(localStorage.getItem("usuarioLogado"));
+}
+
+/* =========================
    META
 ========================= */
 function salvarMeta(){
@@ -104,11 +111,12 @@ function excluirAgendamento(index){
 }
 
 /* =========================
-   VENDAS
+   VENDAS (CONTROLE ADMIN / VENDEDOR)
 ========================= */
 function addVenda(){
   const cliente = document.getElementById("vCliente").value;
   const valor = document.getElementById("vValor").value;
+  const usuario = getUsuario();
 
   if(!cliente || !valor){
     alert("Preencha todos os campos");
@@ -116,7 +124,13 @@ function addVenda(){
   }
 
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-  vendas.push({ cliente, valor });
+
+  vendas.push({
+    cliente,
+    valor,
+    vendedor: usuario.login
+  });
+
   localStorage.setItem("vendas", JSON.stringify(vendas));
 
   document.getElementById("vCliente").value = "";
@@ -128,13 +142,21 @@ function addVenda(){
 function listarVendas(){
   const lista = document.getElementById("listaVendas");
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+  const usuario = getUsuario();
 
   lista.innerHTML = "";
 
   vendas.forEach((v, i) => {
+
+    // vendedor só vê as próprias vendas
+    if(usuario.tipo === "vendedor" && v.vendedor !== usuario.login){
+      return;
+    }
+
     lista.innerHTML += `
       <p>
         <b>${i+1}.</b> ${v.cliente} - R$ ${Number(v.valor).toFixed(2)}
+        <span style="color:#ff8c00">(${v.vendedor})</span>
         <button onclick="excluirVenda(${i})">🗑️</button>
       </p>
     `;
@@ -142,7 +164,15 @@ function listarVendas(){
 }
 
 function excluirVenda(index){
+  const usuario = getUsuario();
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+
+  // vendedor não pode excluir venda de outro
+  if(usuario.tipo === "vendedor" && vendas[index].vendedor !== usuario.login){
+    alert("Você não pode excluir vendas de outro vendedor");
+    return;
+  }
+
   vendas.splice(index, 1);
   localStorage.setItem("vendas", JSON.stringify(vendas));
   listarVendas();
@@ -186,7 +216,7 @@ function listarUsuarios(){
   usuarios.forEach((u, i) => {
     lista.innerHTML += `
       <p>
-        👤 <b>${u.login}</b> 
+        👤 <b>${u.login}</b>
         <span style="color:#ff8c00">(${u.tipo})</span>
         <button onclick="excluirUsuario(${i})">🗑️</button>
       </p>
@@ -202,4 +232,3 @@ function excluirUsuario(index){
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   listarUsuarios();
 }
-
