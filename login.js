@@ -1,24 +1,31 @@
-// USUÁRIO PADRÃO (GARANTE ACESSO)
-if(!localStorage.getItem("usuarios")){
-  localStorage.setItem("usuarios", JSON.stringify([
-    {login:"admin", senha:"123", tipo:"admin"}
-  ]));
-}
-
 function login(){
-  const u = document.getElementById("usuario").value;
-  const s = document.getElementById("senha").value;
+  const login = document.getElementById("usuario").value;
+  const senha = document.getElementById("senha").value;
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios"));
-
-  const user = usuarios.find(x => x.login === u && x.senha === s);
-
-  if(!user){
-    alert("Usuário ou senha inválidos");
+  if(!login || !senha){
+    alert("Preencha usuário e senha");
     return;
   }
 
-  localStorage.setItem("usuarioLogado", JSON.stringify(user));
-  window.location.href = "dashboard.html";
-}
+  // busca usuários cadastrados
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
+  // procura usuário correto
+  const user = usuarios.find(u => u.login === login && u.senha === senha);
+
+  if(!user){
+    alert("Usuário ou senha incorretos");
+    return;
+  }
+
+  // salva sessão
+  localStorage.setItem("usuarioLogado", JSON.stringify(user));
+
+  // redireciona
+  if(user.tipo === "admin"){
+    location.href = "dashboard.html";
+  } else {
+    location.href = "dashboard.html"; 
+    // se quiser separar depois: vendedor.html
+  }
+}
