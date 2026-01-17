@@ -11,8 +11,10 @@ body{
   display:flex;
   font-family:Arial, sans-serif;
   background:#081a33;
+  color:#fff;
 }
 
+/* MENU LATERAL */
 .sidebar{
   width:220px;
   background:#0b1d39;
@@ -43,16 +45,18 @@ body{
   background:#ff9f2d;
 }
 
+/* CONTEÚDO */
 .content{
   flex:1;
   padding:30px;
 }
 
+/* 🔴 REGRA MAIS IMPORTANTE */
 .box{
+  display:none;
   background:#0f254a;
   padding:20px;
   border-radius:14px;
-  display:none;
   max-width:650px;
 }
 
@@ -70,11 +74,25 @@ body{
   border:none;
 }
 
+.box button{
+  background:#ff8c00;
+  color:#fff;
+  border:none;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.box button:hover{
+  background:#ff9f2d;
+}
+
 .box hr{
   margin:15px 0;
   border:1px solid #1e3a6d;
 }
 
+/* RODAPÉ */
 footer{
   position:fixed;
   bottom:10px;
@@ -87,7 +105,7 @@ footer{
 
 <body>
 
-<!-- MENU LATERAL -->
+<!-- MENU -->
 <div class="sidebar">
   <h2>ALPHA</h2>
 
@@ -109,7 +127,7 @@ footer{
   <div id="metaBox" class="box">
     <h3>🎯 Meta Mensal</h3>
     <input id="meta" type="number" placeholder="Valor da meta">
-    <button type="button" onclick="salvarMeta()">Salvar Meta</button>
+    <button onclick="salvarMeta()">Salvar Meta</button>
   </div>
 
   <!-- CONTATOS -->
@@ -117,7 +135,7 @@ footer{
     <h3>📇 Contatos</h3>
     <input id="nome" placeholder="Nome">
     <input id="telefone" placeholder="Telefone">
-    <button type="button" onclick="addContato()">Salvar Contato</button>
+    <button onclick="addContato()">Salvar Contato</button>
     <hr>
     <div id="listaContatos"></div>
   </div>
@@ -128,7 +146,7 @@ footer{
     <input id="cliente" placeholder="Cliente">
     <input id="data" type="date">
     <input id="hora" type="time">
-    <button type="button" onclick="addAgendamento()">Salvar Agendamento</button>
+    <button onclick="addAgendamento()">Salvar Agendamento</button>
     <hr>
     <div id="listaAgendamentos"></div>
   </div>
@@ -138,35 +156,35 @@ footer{
     <h3>💰 Vendas</h3>
     <input id="vCliente" placeholder="Cliente">
     <input id="vValor" type="number" placeholder="Valor">
-    <button type="button" onclick="addVenda()">Registrar Venda</button>
+    <button onclick="addVenda()">Registrar Venda</button>
     <hr>
     <div id="listaVendas"></div>
   </div>
 
   <!-- USUÁRIOS -->
-<div id="userBox" class="box">
-  <h3>👤 Novo Usuário</h3>
+  <div id="userBox" class="box">
+    <h3>👤 Novo Usuário</h3>
 
-  <input id="uLogin" placeholder="Login">
-  <input id="uSenha" placeholder="Senha">
+    <input id="uLogin" placeholder="Login">
+    <input id="uSenha" placeholder="Senha">
 
-  <select id="uTipo">
-    <option value="vendedor">Vendedor</option>
-    <option value="admin">Admin</option>
-  </select>
+    <select id="uTipo">
+      <option value="vendedor">Vendedor</option>
+      <option value="admin">Admin</option>
+    </select>
 
-  <button onclick="addUser()">Criar Usuário</button>
+    <button onclick="addUser()">Criar Usuário</button>
 
-  <hr>
+    <hr>
 
-  <h4>Usuários Cadastrados</h4>
-  <div id="listaUsuarios"></div>
+    <h4>Usuários Cadastrados</h4>
+    <div id="listaUsuarios"></div>
+  </div>
+
 </div>
-
 
 <footer>Desenvolvido por ELBS_</footer>
 
-<!-- JS GLOBAL -->
 <script>
 function abrir(id){
   document.querySelectorAll(".box").forEach(b => b.style.display = "none");
@@ -175,7 +193,7 @@ function abrir(id){
   if(id === "contatoBox") listarContatos();
   if(id === "agendaBox") listarAgendamentos();
   if(id === "vendaBox") listarVendas();
-  if(id === "userBox") listarUsuarios(); // 👈 ESSENCIAL
+  if(id === "userBox") listarUsuarios();
 }
 </script>
 
@@ -184,3 +202,4 @@ function abrir(id){
 
 </body>
 </html>
+
