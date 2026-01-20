@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>ALPHA SOLUÇÕES - Dashboard</title>
-<link rel="stylesheet" href="style.css">
 
 <style>
 body{
@@ -11,10 +10,9 @@ body{
   display:flex;
   font-family:Arial, sans-serif;
   background:#081a33;
-  color:#fff;
+  color:white;
 }
 
-/* MENU LATERAL */
 .sidebar{
   width:220px;
   background:#0b1d39;
@@ -26,7 +24,6 @@ body{
 }
 
 .sidebar h2{
-  color:white;
   text-align:center;
   margin-bottom:20px;
 }
@@ -45,19 +42,17 @@ body{
   background:#ff9f2d;
 }
 
-/* CONTEÚDO */
 .content{
   flex:1;
   padding:30px;
 }
 
-/* 🔴 REGRA MAIS IMPORTANTE */
 .box{
-  display:none;
   background:#0f254a;
   padding:20px;
   border-radius:14px;
-  max-width:650px;
+  display:none;
+  max-width:700px;
 }
 
 .box h3{
@@ -75,16 +70,7 @@ body{
 }
 
 .box button{
-  background:#ff8c00;
-  color:#fff;
-  border:none;
-  padding:10px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.box button:hover{
-  background:#ff9f2d;
+  margin-top:5px;
 }
 
 .box hr{
@@ -92,20 +78,19 @@ body{
   border:1px solid #1e3a6d;
 }
 
-/* RODAPÉ */
 footer{
   position:fixed;
   bottom:10px;
   right:20px;
-  color:#aaa;
   font-size:12px;
+  color:#aaa;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MENU -->
+<!-- MENU LATERAL -->
 <div class="sidebar">
   <h2>ALPHA</h2>
 
@@ -113,7 +98,7 @@ footer{
   <button onclick="abrir('contatoBox')">📇 Contatos</button>
   <button onclick="abrir('agendaBox')">📅 Agendamentos</button>
   <button onclick="abrir('vendaBox')">💰 Vendas</button>
-  <button onclick="abrir('userBox')">👤 Usuários</button>
+  <button onclick="abrir('userBox')" id="btnUsuarios">👤 Usuários</button>
 
   <hr style="border:1px solid #1e3a6d">
 
@@ -159,47 +144,5 @@ footer{
     <button onclick="addVenda()">Registrar Venda</button>
     <hr>
     <div id="listaVendas"></div>
-  </div>
-
-  <!-- USUÁRIOS -->
-  <div id="userBox" class="box">
-    <h3>👤 Novo Usuário</h3>
-
-    <input id="uLogin" placeholder="Login">
-    <input id="uSenha" placeholder="Senha">
-
-    <select id="uTipo">
-      <option value="vendedor">Vendedor</option>
-      <option value="admin">Admin</option>
-    </select>
-
-    <button onclick="addUser()">Criar Usuário</button>
-
-    <hr>
-
-    <h4>Usuários Cadastrados</h4>
-    <div id="listaUsuarios"></div>
-  </div>
-
-</div>
-
-<footer>Desenvolvido por ELBS_</footer>
-
-<script>
-function abrir(id){
-  document.querySelectorAll(".box").forEach(b => b.style.display = "none");
-  document.getElementById(id).style.display = "block";
-
-  if(id === "contatoBox") listarContatos();
-  if(id === "agendaBox") listarAgendamentos();
-  if(id === "vendaBox") listarVendas();
-  if(id === "userBox") listarUsuarios();
-}
-</script>
-
-<script src="login.js"></script>
-<script src="script.js"></script>
-
-</body>
-</html>
+  </
 
