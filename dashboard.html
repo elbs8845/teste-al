@@ -77,11 +77,13 @@ button{cursor:pointer}
 </div>
 
 <script>
-const u = JSON.parse(localStorage.getItem("usuarioLogado"));
-if(u.tipo !== "admin"){
-  document.getElementById("btnUsuarios").style.display="none";
+const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+if(usuario.tipo !== "admin"){
+  document.getElementById("btnUsuarios").style.display = "none";
 }
 </script>
+
 
 </body>
 </html>
