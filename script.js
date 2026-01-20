@@ -1,261 +1,214 @@
-/* ==================================================
-   CONTROLE DE SESSÃO
-================================================== */
+/* =========================
+   SESSÃO / USUÁRIO LOGADO
+========================= */
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
-if (!usuarioLogado) {
-  alert("Sessão expirada. Faça login novamente.");
-  window.location.href = "index.html";
+if(!usuarioLogado){
+  alert("Faça login novamente");
+  location.href = "index.html";
 }
 
-/* ==================================================
+/* =========================
    META
-================================================== */
-function salvarMeta() {
+========================= */
+function salvarMeta(){
   const meta = document.getElementById("meta").value;
-  if (!meta) {
-    alert("Informe a meta");
-    return;
-  }
+  if(!meta) return alert("Informe a meta");
+
   localStorage.setItem("meta", meta);
   alert("Meta salva com sucesso");
 }
 
-/* ==================================================
+/* =========================
    CONTATOS
-================================================== */
-function addContato() {
+========================= */
+function addContato(){
   const nome = document.getElementById("nome").value;
   const telefone = document.getElementById("telefone").value;
 
-  if (!nome || !telefone) {
-    alert("Preencha todos os campos");
-    return;
-  }
+  if(!nome || !telefone) return alert("Preencha tudo");
 
   let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  contatos.push({ nome, telefone });
+
+  contatos.push({
+    nome,
+    telefone,
+    vendedor: usuarioLogado.login
+  });
+
   localStorage.setItem("contatos", JSON.stringify(contatos));
-
-  document.getElementById("nome").value = "";
-  document.getElementById("telefone").value = "";
-
   listarContatos();
 }
 
-function listarContatos() {
-  const lista = document.getElementById("listaContatos");
+function listarContatos(){
   let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-
+  const lista = document.getElementById("listaContatos");
   lista.innerHTML = "";
 
-  contatos.forEach((c, i) => {
+  if(usuarioLogado.tipo === "vendedor"){
+    contatos = contatos.filter(c => c.vendedor === usuarioLogado.login);
+  }
+
+  contatos.forEach((c,i)=>{
     lista.innerHTML += `
       <p>
-        <b>${i + 1}.</b> ${c.nome} - ${c.telefone}
+        ${c.nome} - ${c.telefone}
         <button onclick="excluirContato(${i})">🗑️</button>
       </p>
     `;
   });
 }
 
-function excluirContato(index) {
+function excluirContato(i){
   let contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  contatos.splice(index, 1);
+  contatos.splice(i,1);
   localStorage.setItem("contatos", JSON.stringify(contatos));
   listarContatos();
 }
 
-/* ==================================================
+/* =========================
    AGENDAMENTOS
-================================================== */
-function addAgendamento() {
+========================= */
+function addAgendamento(){
   const cliente = document.getElementById("cliente").value;
   const data = document.getElementById("data").value;
   const hora = document.getElementById("hora").value;
 
-  if (!cliente || !data || !hora) {
-    alert("Preencha todos os campos");
-    return;
-  }
+  if(!cliente || !data || !hora) return alert("Preencha tudo");
 
   let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-  agendamentos.push({ cliente, data, hora });
+
+  agendamentos.push({
+    cliente, data, hora,
+    vendedor: usuarioLogado.login
+  });
+
   localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
-
-  document.getElementById("cliente").value = "";
-  document.getElementById("data").value = "";
-  document.getElementById("hora").value = "";
-
   listarAgendamentos();
 }
 
-function listarAgendamentos() {
-  const lista = document.getElementById("listaAgendamentos");
+function listarAgendamentos(){
   let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-
+  const lista = document.getElementById("listaAgendamentos");
   lista.innerHTML = "";
 
-  agendamentos.forEach((a, i) => {
+  if(usuarioLogado.tipo === "vendedor"){
+    agendamentos = agendamentos.filter(a => a.vendedor === usuarioLogado.login);
+  }
+
+  agendamentos.forEach((a,i)=>{
     lista.innerHTML += `
       <p>
-        <b>${i + 1}.</b> ${a.cliente} | ${a.data} às ${a.hora}
+        ${a.cliente} - ${a.data} ${a.hora}
         <button onclick="excluirAgendamento(${i})">🗑️</button>
       </p>
     `;
   });
 }
 
-function excluirAgendamento(index) {
+function excluirAgendamento(i){
   let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
-  agendamentos.splice(index, 1);
+  agendamentos.splice(i,1);
   localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
   listarAgendamentos();
 }
 
-/* ==================================================
-   VENDAS (ADMIN / VENDEDOR)
-================================================== */
-function addVenda() {
+/* =========================
+   VENDAS
+========================= */
+function addVenda(){
   const cliente = document.getElementById("vCliente").value;
   const valor = document.getElementById("vValor").value;
 
-  if (!cliente || !valor) {
-    alert("Preencha todos os campos");
-    return;
-  }
+  if(!cliente || !valor) return alert("Preencha tudo");
 
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
   vendas.push({
     cliente,
-    valor: Number(valor),
+    valor,
     vendedor: usuarioLogado.login
   });
 
   localStorage.setItem("vendas", JSON.stringify(vendas));
-
-  document.getElementById("vCliente").value = "";
-  document.getElementById("vValor").value = "";
-
   listarVendas();
 }
 
-function listarVendas() {
-  const lista = document.getElementById("listaVendas");
+function listarVendas(){
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
+  const lista = document.getElementById("listaVendas");
   lista.innerHTML = "";
 
-  let vendasFiltradas = vendas;
-
-  if (usuarioLogado.tipo === "vendedor") {
-    vendasFiltradas = vendas.filter(
-      v => v.vendedor === usuarioLogado.login
-    );
+  if(usuarioLogado.tipo === "vendedor"){
+    vendas = vendas.filter(v => v.vendedor === usuarioLogado.login);
   }
 
-  let total = 0;
-
-  vendasFiltradas.forEach((v, i) => {
-    total += v.valor;
-
+  vendas.forEach((v,i)=>{
     lista.innerHTML += `
       <p>
-        <b>${i + 1}.</b> ${v.cliente} - 
-        R$ ${v.valor.toFixed(2)}
-        <small style="color:#aaa">(${v.vendedor})</small>
+        ${v.cliente} - R$ ${v.valor}
         <button onclick="excluirVenda(${i})">🗑️</button>
       </p>
     `;
   });
-
-  lista.innerHTML += `
-    <hr>
-    <p><b>Total:</b> R$ ${total.toFixed(2)}</p>
-  `;
 }
 
-function excluirVenda(index) {
+function excluirVenda(i){
   let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
-  if (!confirm("Deseja excluir esta venda?")) return;
-
-  if (usuarioLogado.tipo === "vendedor") {
-    vendas = vendas.filter(v => v.vendedor === usuarioLogado.login);
-  }
-
-  vendas.splice(index, 1);
+  vendas.splice(i,1);
   localStorage.setItem("vendas", JSON.stringify(vendas));
-
   listarVendas();
 }
 
-/* ==================================================
-   USUÁRIOS (SOMENTE ADMIN)
-================================================== */
-function addUser() {
-  if (usuarioLogado.tipo !== "admin") {
-    alert("Acesso negado");
-    return;
+/* =========================
+   USUÁRIOS (ADMIN)
+========================= */
+function addUser(){
+  if(usuarioLogado.tipo !== "admin"){
+    return alert("Acesso restrito");
   }
 
-  const login = document.getElementById("uLogin").value;
-  const senha = document.getElementById("uSenha").value;
-  const tipo = document.getElementById("uTipo").value;
-
-  if (!login || !senha) {
-    alert("Preencha todos os campos");
-    return;
-  }
+  const login = uLogin.value;
+  const senha = uSenha.value;
+  const tipo = uTipo.value;
 
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-  if (usuarios.some(u => u.login === login)) {
-    alert("Usuário já existe");
-    return;
+  if(usuarios.some(u=>u.login===login)){
+    return alert("Usuário já existe");
   }
 
-  usuarios.push({ login, senha, tipo });
+  usuarios.push({login,senha,tipo});
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-  document.getElementById("uLogin").value = "";
-  document.getElementById("uSenha").value = "";
-
   listarUsuarios();
 }
 
-function listarUsuarios() {
+function listarUsuarios(){
   const lista = document.getElementById("listaUsuarios");
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
   lista.innerHTML = "";
 
-  usuarios.forEach((u, i) => {
+  usuarios.forEach((u,i)=>{
     lista.innerHTML += `
       <p>
-        👤 <b>${u.login}</b> 
-        <span style="color:#ff8c00">(${u.tipo})</span>
+        ${u.login} (${u.tipo})
         <button onclick="excluirUsuario(${i})">🗑️</button>
       </p>
     `;
   });
 }
 
-function excluirUsuario(index) {
-  if (!confirm("Deseja excluir este usuário?")) return;
-
+function excluirUsuario(i){
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-  usuarios.splice(index, 1);
+  usuarios.splice(i,1);
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
   listarUsuarios();
 }
 
-/* ==================================================
-   LOGOUT
-================================================== */
-function sair() {
-  localStorage.removeItem("usuarioLogado");
-  window.location.href = "index.html";
+/* =========================
+   ABRIR BOX
+========================= */
+function abrir(id){
+  document.querySelectorAll(".box").forEach(b=>b.style.display="none");
+  document.getElementById(id).style.display="block";
 }
