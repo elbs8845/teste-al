@@ -1,121 +1,73 @@
 // =====================
-// CONTROLE DE SESSÃO
+// SESSÃO
 // =====================
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-if (!usuarioLogado) {
-  location.href = "index.html";
-}
+if (!usuarioLogado) location.href = "index.html";
 
 // =====================
 // CONTATOS
 // =====================
 function addContato() {
-  const nome = document.getElementById("nome").value;
-  const telefone = document.getElementById("telefone").value;
-
+  const nome = nomeInput("nome");
+  const telefone = nomeInput("telefone");
   if (!nome || !telefone) return alert("Preencha os campos");
 
-  const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-
-  contatos.push({
-    nome,
-    telefone,
-    vendedor: usuarioLogado.login
-  });
-
-  localStorage.setItem("contatos", JSON.stringify(contatos));
+  const dados = getLS("contatos");
+  dados.push({ nome, telefone, vendedor: usuarioLogado.login });
+  setLS("contatos", dados);
   listarContatos();
 }
 
 function listarContatos() {
-  const lista = document.getElementById("listaContatos");
-  lista.innerHTML = "";
-
-  const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-
-  contatos
-    .filter(c => usuarioLogado.tipo !== "vendedor" || c.vendedor === usuarioLogado.login)
-    .forEach((c, i) => {
-      lista.innerHTML += `
-        <div class="item">
-          ${c.nome} - ${c.telefone}
-          <button onclick="delContato(${i})">🗑️</button>
-        </div>`;
-    });
+  renderList("listaContatos", "contatos", (c) =>
+    `${c.nome} - ${c.telefone}`,
+    "delContato"
+  );
 }
 
 function delContato(i) {
-  const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  contatos.splice(i, 1);
-  localStorage.setItem("contatos", JSON.stringify(contatos));
-  listarContatos();
+  delItem("contatos", i, listarContatos);
 }
 
 // =====================
 // AGENDAMENTOS
 // =====================
 function addAgendamento() {
-  const cliente = document.getElementById("cliente").value;
-  const data = document.getElementById("data").value;
-  const hora = document.getElementById("hora").value;
-
+  const cliente = nomeInput("cliente");
+  const data = nomeInput("data");
+  const hora = nomeInput("hora");
   if (!cliente || !data || !hora) return alert("Preencha os campos");
 
-  const ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
-
-  ag.push({
-    cliente,
-    data,
-    hora,
-    vendedor: usuarioLogado.login
-  });
-
-  localStorage.setItem("agendamentos", JSON.stringify(ag));
+  const dados = getLS("agendamentos");
+  dados.push({ cliente, data, hora, vendedor: usuarioLogado.login });
+  setLS("agendamentos", dados);
   listarAgendamentos();
 }
 
 function listarAgendamentos() {
-  const lista = document.getElementById("listaAgendamentos");
-  lista.innerHTML = "";
-
-  const ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
-
-  ag
-    .filter(a => usuarioLogado.tipo !== "vendedor" || a.vendedor === usuarioLogado.login)
-    .forEach((a, i) => {
-      lista.innerHTML += `
-        <div class="item">
-          ${a.cliente} - ${a.data} ${a.hora}
-          <button onclick="delAg(${i})">🗑️</button>
-        </div>`;
-    });
+  renderList(
+    "listaAgendamentos",
+    "agendamentos",
+    (a) => `${a.cliente} - ${a.data} ${a.hora}`,
+    "delAgendamento"
+  );
 }
 
-function delAg(i) {
-  const ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
-  ag.splice(i, 1);
-  localStorage.setItem("agendamentos", JSON.stringify(ag));
-  listarAgendamentos();
+function delAgendamento(i) {
+  delItem("agendamentos", i, listarAgendamentos);
 }
 
 // =====================
-// VENDAS (CORRIGIDO)
+// VENDAS (100% FUNCIONAL)
 // =====================
 function addVenda() {
-  const cliente = document.getElementById("vCliente").value;
-  const valor = Number(document.getElementById("vValor").value);
-
+  const cliente = nomeInput("vCliente");
+  const valor = Number(nomeInput("vValor"));
   if (!cliente || !valor) return alert("Preencha os campos");
 
-  const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
-  vendas.push({
-    cliente,
-    valor,
-    vendedor: usuarioLogado.login
-  });
-
-  localStorage.setItem("vendas", JSON.stringify(vendas));
+  const vendas = getLS("vendas");
+  vendas.push({ cliente, valor, vendedor: usuarioLogado.login });
+  setLS("vendas", vendas);
   listarVendas();
 }
 
@@ -123,49 +75,44 @@ function listarVendas() {
   const lista = document.getElementById("listaVendas");
   lista.innerHTML = "";
 
-  const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
+  const vendas = getLS("vendas");
   let total = 0;
 
-  vendas
-    .filter(v => usuarioLogado.tipo !== "vendedor" || v.vendedor === usuarioLogado.login)
-    .forEach((v, i) => {
-      total += v.valor;
-      lista.innerHTML += `
-        <div class="item">
-          ${v.cliente} - R$ ${v.valor.toFixed(2)}
-          <button onclick="delVenda(${i})">🗑️</button>
-        </div>`;
-    });
+  vendas.forEach((v, i) => {
+    if (usuarioLogado.tipo === "vendedor" && v.vendedor !== usuarioLogado.login) return;
+
+    total += v.valor;
+
+    lista.innerHTML += `
+      <div class="item">
+        ${v.cliente} - R$ ${v.valor.toFixed(2)}
+        <button onclick="delVenda(${i})">🗑️</button>
+      </div>
+    `;
+  });
 
   lista.innerHTML += `
     <hr>
-    <strong>Total: R$ ${total.toFixed(2)}</strong>
+    <strong>Total de Vendas: R$ ${total.toFixed(2)}</strong>
   `;
 }
 
 function delVenda(i) {
-  const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-  vendas.splice(i, 1);
-  localStorage.setItem("vendas", JSON.stringify(vendas));
-  listarVendas();
+  delItem("vendas", i, listarVendas);
 }
 
 // =====================
 // USUÁRIOS
 // =====================
 function addUser() {
-  const login = document.getElementById("uLogin").value;
-  const senha = document.getElementById("uSenha").value;
-  const tipo = document.getElementById("uTipo").value;
-
+  const login = nomeInput("uLogin");
+  const senha = nomeInput("uSenha");
+  const tipo = nomeInput("uTipo");
   if (!login || !senha) return alert("Preencha os campos");
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-  usuarios.push({ login, senha, tipo });
-
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  const users = getLS("usuarios");
+  users.push({ login, senha, tipo });
+  setLS("usuarios", users);
   listarUsuarios();
 }
 
@@ -173,26 +120,44 @@ function listarUsuarios() {
   const lista = document.getElementById("listaUsuarios");
   lista.innerHTML = "";
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-  usuarios.forEach((u, i) => {
+  getLS("usuarios").forEach((u, i) => {
     lista.innerHTML += `
       <div class="item">
         ${u.login} (${u.tipo})
         <button onclick="delUser(${i})">🗑️</button>
-      </div>`;
+      </div>
+    `;
   });
 }
 
 function delUser(i) {
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-  usuarios.splice(i, 1);
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-  listarUsuarios();
+  delItem("usuarios", i, listarUsuarios);
 }
 
 // =====================
-// PERMISSÃO MENU
+// HELPERS (BASE)
+// =====================
+function getLS(key) {
+  return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+function setLS(key, val) {
+  localStorage.setItem(key, JSON.stringify(val));
+}
+
+function nomeInput(id) {
+  return document.getElementById(id).value;
+}
+
+function delItem(key, i, cb) {
+  const arr = getLS(key);
+  arr.splice(i, 1);
+  setLS(key, arr);
+  cb();
+}
+
+// =====================
+// MENU PERMISSÃO
 // =====================
 if (usuarioLogado.tipo === "vendedor") {
   document.querySelector("button[onclick=\"abrir('userBox')\"]").style.display = "none";
