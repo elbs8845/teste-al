@@ -144,5 +144,59 @@ footer{
     <button onclick="addVenda()">Registrar Venda</button>
     <hr>
     <div id="listaVendas"></div>
-  </
+  </div>
 
+  <!-- USUÁRIOS -->
+  <div id="userBox" class="box">
+    <h3>👤 Novo Usuário</h3>
+
+    <input id="uLogin" placeholder="Login">
+    <input id="uSenha" placeholder="Senha">
+
+    <select id="uTipo">
+      <option value="vendedor">Vendedor</option>
+      <option value="admin">Admin</option>
+    </select>
+
+    <button onclick="addUser()">Criar Usuário</button>
+
+    <hr>
+    <h4>Usuários Cadastrados</h4>
+    <div id="listaUsuarios"></div>
+  </div>
+
+</div>
+
+<footer>Desenvolvido por ELBS_</footer>
+
+<!-- SCRIPT LOCAL -->
+<script>
+function abrir(id){
+  document.querySelectorAll(".box").forEach(b => b.style.display = "none");
+  document.getElementById(id).style.display = "block";
+
+  if(id === "contatoBox") listarContatos();
+  if(id === "agendaBox") listarAgendamentos();
+  if(id === "vendaBox") listarVendas();
+  if(id === "userBox") listarUsuarios();
+}
+
+// controle de menu por tipo
+const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+if(!usuarioLogado){
+  alert("Sessão expirada");
+  window.location.href = "index.html";
+}
+
+if(usuarioLogado.tipo === "vendedor"){
+  const btn = document.getElementById("btnUsuarios");
+  if(btn) btn.style.display = "none";
+}
+</script>
+
+<!-- SCRIPT PRINCIPAL -->
+<script src="script.js"></script>
+
+</body>
+</html>
