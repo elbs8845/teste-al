@@ -28,6 +28,5 @@ function login() {
 
   localStorage.setItem("usuarioLogado", JSON.stringify(user));
 
-  // redireciona
   window.location.href = "dashboard.html";
 }
