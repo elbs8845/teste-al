@@ -7,121 +7,118 @@
 <style>
 body{
   margin:0;
-  display:flex;
   font-family:Arial, sans-serif;
   background:#081a33;
   color:white;
+  display:flex;
 }
 
+/* MENU LATERAL */
 .sidebar{
-  width:220px;
+  width:230px;
   background:#0b1d39;
   min-height:100vh;
   padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+  box-sizing:border-box;
 }
 
 .sidebar h2{
   text-align:center;
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 .sidebar button{
-  background:#ff8c00;
-  color:#fff;
-  border:none;
+  width:100%;
+  margin-bottom:12px;
   padding:12px;
+  background:#ff8c00;
+  border:none;
   border-radius:8px;
+  color:white;
+  font-size:15px;
   cursor:pointer;
-  font-size:14px;
 }
 
 .sidebar button:hover{
-  background:#ff9f2d;
+  opacity:0.9;
 }
 
+/* CONTEÚDO */
 .content{
   flex:1;
   padding:30px;
+  box-sizing:border-box;
 }
 
 .box{
+  display:none;
   background:#0f254a;
   padding:20px;
-  border-radius:14px;
-  display:none;
-  max-width:700px;
+  border-radius:12px;
 }
 
-.box h3{
-  color:#ff8c00;
-  margin-bottom:15px;
-}
-
-.box input,
-.box select{
+/* INPUTS */
+input, select{
   width:100%;
   padding:10px;
   margin-bottom:10px;
   border-radius:8px;
   border:none;
+  outline:none;
 }
 
-.box button{
-  margin-top:5px;
+/* LISTAGEM */
+.item{
+  background:#081a33;
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.box hr{
-  margin:15px 0;
-  border:1px solid #1e3a6d;
+.item button{
+  background:#d10000;
+  border:none;
+  color:white;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
 }
 
+/* RODAPÉ */
 footer{
-  position:fixed;
-  bottom:10px;
-  right:20px;
-  font-size:12px;
-  color:#aaa;
+  margin-top:30px;
+  text-align:center;
+  font-size:13px;
+  opacity:0.8;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MENU LATERAL -->
+<!-- MENU -->
 <div class="sidebar">
   <h2>ALPHA</h2>
 
-  <button onclick="abrir('metaBox')">🎯 Meta</button>
   <button onclick="abrir('contatoBox')">📇 Contatos</button>
   <button onclick="abrir('agendaBox')">📅 Agendamentos</button>
   <button onclick="abrir('vendaBox')">💰 Vendas</button>
   <button onclick="abrir('userBox')" id="btnUsuarios">👤 Usuários</button>
-
-  <hr style="border:1px solid #1e3a6d">
-
   <button onclick="sair()">🚪 Sair</button>
 </div>
 
 <!-- CONTEÚDO -->
 <div class="content">
 
-  <!-- META -->
-  <div id="metaBox" class="box">
-    <h3>🎯 Meta Mensal</h3>
-    <input id="meta" type="number" placeholder="Valor da meta">
-    <button onclick="salvarMeta()">Salvar Meta</button>
-  </div>
-
   <!-- CONTATOS -->
   <div id="contatoBox" class="box">
     <h3>📇 Contatos</h3>
-    <input id="nome" placeholder="Nome">
+    <input id="nome" placeholder="Nome do contato">
     <input id="telefone" placeholder="Telefone">
-    <button onclick="addContato()">Salvar Contato</button>
-    <hr>
+    <button onclick="addContato()">Salvar</button>
     <div id="listaContatos"></div>
   </div>
 
@@ -131,8 +128,7 @@ footer{
     <input id="cliente" placeholder="Cliente">
     <input id="data" type="date">
     <input id="hora" type="time">
-    <button onclick="addAgendamento()">Salvar Agendamento</button>
-    <hr>
+    <button onclick="addAgendamento()">Salvar</button>
     <div id="listaAgendamentos"></div>
   </div>
 
@@ -140,63 +136,32 @@ footer{
   <div id="vendaBox" class="box">
     <h3>💰 Vendas</h3>
     <input id="vCliente" placeholder="Cliente">
-    <input id="vValor" type="number" placeholder="Valor">
-    <button onclick="addVenda()">Registrar Venda</button>
-    <hr>
+    <input id="vValor" type="number" placeholder="Valor da venda">
+    <button onclick="addVenda()">Salvar</button>
     <div id="listaVendas"></div>
   </div>
 
-  <!-- USUÁRIOS -->
+  <!-- USUÁRIOS (ADMIN) -->
   <div id="userBox" class="box">
-    <h3>👤 Novo Usuário</h3>
-
+    <h3>👤 Usuários</h3>
     <input id="uLogin" placeholder="Login">
     <input id="uSenha" placeholder="Senha">
-
     <select id="uTipo">
       <option value="vendedor">Vendedor</option>
       <option value="admin">Admin</option>
     </select>
-
     <button onclick="addUser()">Criar Usuário</button>
-
-    <hr>
-    <h4>Usuários Cadastrados</h4>
     <div id="listaUsuarios"></div>
   </div>
 
+  <footer>
+    ALPHA SOLUÇÕES – Desenvolvido por <b>ELBS</b>
+  </footer>
+
 </div>
 
-<footer>Desenvolvido por ELBS_</footer>
-
-<!-- SCRIPT LOCAL -->
-<script>
-function abrir(id){
-  document.querySelectorAll(".box").forEach(b => b.style.display = "none");
-  document.getElementById(id).style.display = "block";
-
-  if(id === "contatoBox") listarContatos();
-  if(id === "agendaBox") listarAgendamentos();
-  if(id === "vendaBox") listarVendas();
-  if(id === "userBox") listarUsuarios();
-}
-
-// controle de menu por tipo
-const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-
-if(!usuarioLogado){
-  alert("Sessão expirada");
-  window.location.href = "index.html";
-}
-
-if(usuarioLogado.tipo === "vendedor"){
-  const btn = document.getElementById("btnUsuarios");
-  if(btn) btn.style.display = "none";
-}
-</script>
-
-<!-- SCRIPT PRINCIPAL -->
+<!-- SCRIPT -->
 <script src="script.js"></script>
-
 </body>
 </html>
+
