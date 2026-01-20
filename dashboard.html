@@ -2,88 +2,184 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>ALPHA SOLUÇÕES</title>
-<script src="script.js" defer></script>
+<title>ALPHA SOLUÇÕES - Dashboard</title>
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1d39;color:white}
-.menu{
-  width:220px;height:100vh;background:#0f254a;
-  position:fixed;padding:20px
+body{
+  margin:0;
+  display:flex;
+  font-family:Arial, sans-serif;
+  background:#081a33;
+  color:white;
 }
-.menu button{
-  width:100%;margin-bottom:10px;
-  padding:10px;border:none;
-  background:#ff8c00;color:white;
-  border-radius:8px;cursor:pointer
+
+.sidebar{
+  width:220px;
+  background:#0b1d39;
+  min-height:100vh;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
-.conteudo{margin-left:240px;padding:20px}
-.box{display:none;background:#0f254a;padding:15px;border-radius:10px}
-button{cursor:pointer}
+
+.sidebar h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.sidebar button{
+  background:#ff8c00;
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.sidebar button:hover{
+  background:#ff9f2d;
+}
+
+.content{
+  flex:1;
+  padding:30px;
+}
+
+.box{
+  display:none;
+  background:#0f254a;
+  padding:20px;
+  border-radius:14px;
+  max-width:650px;
+}
+
+.box h3{
+  color:#ff8c00;
+}
+
+.box input,
+.box select{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:8px;
+  border:none;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  background:#081a33;
+  padding:8px;
+  margin-bottom:6px;
+  border-radius:6px;
+}
+
+.item button{
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-size:18px;
+}
+
+footer{
+  position:fixed;
+  bottom:10px;
+  right:20px;
+  font-size:12px;
+  color:#aaa;
+}
 </style>
 </head>
+
 <body>
 
-<div class="menu">
-  <h3>ALPHA SOLUÇÕES</h3>
-  <button onclick="abrir('metaBox')">🎯 Meta</button>
+<!-- MENU -->
+<div class="sidebar">
+  <h2>ALPHA</h2>
+
   <button onclick="abrir('contatoBox')">📇 Contatos</button>
   <button onclick="abrir('agendaBox')">📅 Agendamentos</button>
   <button onclick="abrir('vendaBox')">💰 Vendas</button>
-  <button onclick="abrir('userBox')" id="btnUsuarios">👤 Usuários</button>
-  <button onclick="logout()">🚪 Sair</button>
+  <button onclick="abrir('userBox')">👤 Usuários</button>
+
+  <hr style="border:1px solid #1e3a6d">
+
+  <button onclick="sair()">🚪 Sair</button>
 </div>
 
-<div class="conteudo">
+<!-- CONTEÚDO -->
+<div class="content">
 
-<div id="metaBox" class="box">
-  <h2>Meta</h2>
-  <input id="meta"><button onclick="salvarMeta()">Salvar</button>
+  <!-- CONTATOS -->
+  <div id="contatoBox" class="box">
+    <h3>📇 Contatos</h3>
+    <input id="nome" placeholder="Nome">
+    <input id="telefone" placeholder="Telefone">
+    <button onclick="addContato()">Salvar</button>
+    <hr>
+    <div id="listaContatos"></div>
+  </div>
+
+  <!-- AGENDAMENTOS -->
+  <div id="agendaBox" class="box">
+    <h3>📅 Agendamentos</h3>
+    <input id="cliente" placeholder="Cliente">
+    <input id="data" type="date">
+    <input id="hora" type="time">
+    <button onclick="addAgendamento()">Salvar</button>
+    <hr>
+    <div id="listaAgendamentos"></div>
+  </div>
+
+  <!-- VENDAS -->
+  <div id="vendaBox" class="box">
+    <h3>💰 Vendas</h3>
+    <input id="vCliente" placeholder="Cliente">
+    <input id="vValor" type="number" placeholder="Valor">
+    <button onclick="addVenda()">Salvar</button>
+    <hr>
+    <div id="listaVendas"></div>
+  </div>
+
+  <!-- USUÁRIOS -->
+  <div id="userBox" class="box">
+    <h3>👤 Usuários</h3>
+    <input id="uLogin" placeholder="Login">
+    <input id="uSenha" placeholder="Senha">
+    <select id="uTipo">
+      <option value="vendedor">Vendedor</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button onclick="addUser()">Criar</button>
+    <hr>
+    <div id="listaUsuarios"></div>
+  </div>
+
 </div>
 
-<div id="contatoBox" class="box">
-  <h2>Contatos</h2>
-  <input id="nome"><input id="telefone">
-  <button onclick="addContato()">Salvar</button>
-  <div id="listaContatos"></div>
-</div>
+<footer>ALPHA SOLUÇÕES – Desenvolvido por ELBS</footer>
 
-<div id="agendaBox" class="box">
-  <h2>Agendamentos</h2>
-  <input id="cliente"><input type="date" id="data"><input type="time" id="hora">
-  <button onclick="addAgendamento()">Salvar</button>
-  <div id="listaAgendamentos"></div>
-</div>
-
-<div id="vendaBox" class="box">
-  <h2>Vendas</h2>
-  <input id="vCliente"><input id="vValor">
-  <button onclick="addVenda()">Salvar</button>
-  <div id="listaVendas"></div>
-</div>
-
-<div id="userBox" class="box">
-  <h2>Usuários</h2>
-  <input id="uLogin"><input id="uSenha">
-  <select id="uTipo">
-    <option value="vendedor">Vendedor</option>
-    <option value="supervisor">Supervisor</option>
-    <option value="admin">Admin</option>
-  </select>
-  <button onclick="addUser()">Criar</button>
-  <div id="listaUsuarios"></div>
-</div>
-
-<p>Desenvolvido por ELBS</p>
-</div>
-
+<!-- CONTROLE DE ABERTURA -->
 <script>
-const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+function abrir(id){
+  document.querySelectorAll(".box").forEach(b => b.style.display = "none");
+  document.getElementById(id).style.display = "block";
 
-if(usuario.tipo !== "admin"){
-  document.getElementById("btnUsuarios").style.display = "none";
+  if(id === "contatoBox") listarContatos();
+  if(id === "agendaBox") listarAgendamentos();
+  if(id === "vendaBox") listarVendas();
+  if(id === "userBox") listarUsuarios();
+}
+
+function sair(){
+  localStorage.removeItem("usuarioLogado");
+  location.href = "index.html";
 }
 </script>
 
+<script src="script.js"></script>
 
 </body>
 </html>
