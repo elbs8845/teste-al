@@ -105,7 +105,10 @@ function addVenda() {
   const cliente = document.getElementById("vCliente").value;
   const valor = Number(document.getElementById("vValor").value);
 
-  if (!cliente || !valor) return alert("Preencha os campos");
+  if (!cliente || !valor) {
+    alert("Preencha todos os campos");
+    return;
+  }
 
   const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
@@ -116,6 +119,10 @@ function addVenda() {
   });
 
   localStorage.setItem("vendas", JSON.stringify(vendas));
+
+  document.getElementById("vCliente").value = "";
+  document.getElementById("vValor").value = "";
+
   listarVendas();
 }
 
@@ -124,40 +131,40 @@ function listarVendas() {
   lista.innerHTML = "";
 
   const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+
   let total = 0;
 
-  vendas.forEach((v, index) => {
-    if (usuarioLogado.tipo === "vendedor" && v.vendedor !== usuarioLogado.login) return;
+  const vendasFiltradas = vendas.filter(v =>
+    usuarioLogado.tipo !== "vendedor" || v.vendedor === usuarioLogado.login
+  );
 
-    total += v.valor;
+  if (vendasFiltradas.length === 0) {
+    lista.innerHTML = "<p>Nenhuma venda registrada.</p>";
+    return;
+  }
+
+  vendasFiltradas.forEach((v, i) => {
+    total += Number(v.valor);
 
     lista.innerHTML += `
       <div class="item">
-        ${v.cliente} - R$ ${v.valor.toFixed(2)}
-        <button onclick="delVenda(${index})">🗑️</button>
-      </div>`;
+        <span>
+          ${v.cliente} — R$ ${Number(v.valor).toFixed(2)}
+          <br>
+          <small style="color:#aaa">Vendedor: ${v.vendedor}</small>
+        </span>
+        <button onclick="delVenda(${i})">🗑️</button>
+      </div>
+    `;
   });
 
   lista.innerHTML += `
     <hr>
-    <strong>Total: R$ ${total.toFixed(2)}</strong>
+    <h3>Total de Vendas: R$ ${total.toFixed(2)}</h3>
   `;
 }
 
-function delVenda(index) {
-  const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
-  if (
-    usuarioLogado.tipo === "vendedor" &&
-    vendas[index].vendedor !== usuarioLogado.login
-  ) {
-    return alert("Você só pode excluir suas próprias vendas");
-  }
-
-  vendas.splice(index, 1);
-  localStorage.setItem("vendas", JSON.stringify(vendas));
-  listarVendas();
-}
 
 // =====================
 // USUÁRIOS (ADMIN)
