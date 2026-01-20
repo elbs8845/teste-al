@@ -33,20 +33,20 @@ function listarContatos() {
 
   const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
 
-  contatos
-    .filter(c => usuarioLogado.tipo !== "vendedor" || c.vendedor === usuarioLogado.login)
-    .forEach((c, i) => {
-      lista.innerHTML += `
-        <div class="item">
-          ${c.nome} - ${c.telefone}
-          <button onclick="delContato(${i})">🗑️</button>
-        </div>`;
-    });
+  contatos.forEach((c, index) => {
+    if (usuarioLogado.tipo === "vendedor" && c.vendedor !== usuarioLogado.login) return;
+
+    lista.innerHTML += `
+      <div class="item">
+        ${c.nome} - ${c.telefone}
+        <button onclick="delContato(${index})">🗑️</button>
+      </div>`;
+  });
 }
 
-function delContato(i) {
+function delContato(index) {
   const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  contatos.splice(i, 1);
+  contatos.splice(index, 1);
   localStorage.setItem("contatos", JSON.stringify(contatos));
   listarContatos();
 }
@@ -80,20 +80,20 @@ function listarAgendamentos() {
 
   const ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
 
-  ag
-    .filter(a => usuarioLogado.tipo !== "vendedor" || a.vendedor === usuarioLogado.login)
-    .forEach((a, i) => {
-      lista.innerHTML += `
-        <div class="item">
-          ${a.cliente} - ${a.data} ${a.hora}
-          <button onclick="delAg(${i})">🗑️</button>
-        </div>`;
-    });
+  ag.forEach((a, index) => {
+    if (usuarioLogado.tipo === "vendedor" && a.vendedor !== usuarioLogado.login) return;
+
+    lista.innerHTML += `
+      <div class="item">
+        ${a.cliente} - ${a.data} ${a.hora}
+        <button onclick="delAg(${index})">🗑️</button>
+      </div>`;
+  });
 }
 
-function delAg(i) {
+function delAg(index) {
   const ag = JSON.parse(localStorage.getItem("agendamentos")) || [];
-  ag.splice(i, 1);
+  ag.splice(index, 1);
   localStorage.setItem("agendamentos", JSON.stringify(ag));
   listarAgendamentos();
 }
@@ -124,19 +124,19 @@ function listarVendas() {
   lista.innerHTML = "";
 
   const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-
   let total = 0;
 
-  vendas
-    .filter(v => usuarioLogado.tipo !== "vendedor" || v.vendedor === usuarioLogado.login)
-    .forEach((v, i) => {
-      total += v.valor;
-      lista.innerHTML += `
-        <div class="item">
-          ${v.cliente} - R$ ${v.valor.toFixed(2)}
-          <button onclick="delVenda(${i})">🗑️</button>
-        </div>`;
-    });
+  vendas.forEach((v, index) => {
+    if (usuarioLogado.tipo === "vendedor" && v.vendedor !== usuarioLogado.login) return;
+
+    total += v.valor;
+
+    lista.innerHTML += `
+      <div class="item">
+        ${v.cliente} - R$ ${v.valor.toFixed(2)}
+        <button onclick="delVenda(${index})">🗑️</button>
+      </div>`;
+  });
 
   lista.innerHTML += `
     <hr>
@@ -144,17 +144,27 @@ function listarVendas() {
   `;
 }
 
-function delVenda(i) {
+function delVenda(index) {
   const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
-  vendas.splice(i, 1);
+
+  if (
+    usuarioLogado.tipo === "vendedor" &&
+    vendas[index].vendedor !== usuarioLogado.login
+  ) {
+    return alert("Você só pode excluir suas próprias vendas");
+  }
+
+  vendas.splice(index, 1);
   localStorage.setItem("vendas", JSON.stringify(vendas));
   listarVendas();
 }
 
 // =====================
-// USUÁRIOS
+// USUÁRIOS (ADMIN)
 // =====================
 function addUser() {
+  if (usuarioLogado.tipo !== "admin") return alert("Acesso negado");
+
   const login = document.getElementById("uLogin").value;
   const senha = document.getElementById("uSenha").value;
   const tipo = document.getElementById("uTipo").value;
@@ -163,8 +173,11 @@ function addUser() {
 
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-  usuarios.push({ login, senha, tipo });
+  if (usuarios.some(u => u.login === login)) {
+    return alert("Usuário já existe");
+  }
 
+  usuarios.push({ login, senha, tipo });
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   listarUsuarios();
 }
@@ -175,18 +188,18 @@ function listarUsuarios() {
 
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-  usuarios.forEach((u, i) => {
+  usuarios.forEach((u, index) => {
     lista.innerHTML += `
       <div class="item">
         ${u.login} (${u.tipo})
-        <button onclick="delUser(${i})">🗑️</button>
+        <button onclick="delUser(${index})">🗑️</button>
       </div>`;
   });
 }
 
-function delUser(i) {
+function delUser(index) {
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-  usuarios.splice(i, 1);
+  usuarios.splice(index, 1);
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   listarUsuarios();
 }
@@ -195,5 +208,6 @@ function delUser(i) {
 // PERMISSÃO MENU
 // =====================
 if (usuarioLogado.tipo === "vendedor") {
-  document.querySelector("button[onclick=\"abrir('userBox')\"]").style.display = "none";
+  const btn = document.querySelector("button[onclick=\"abrir('userBox')\"]");
+  if (btn) btn.style.display = "none";
 }
