@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ALPHA SOLUÇÕES - Login</title>
+
 <style>
 body{
   background:#0b1d39;
@@ -19,7 +20,10 @@ body{
   border-radius:15px;
   width:300px;
 }
-h2{color:white;text-align:center}
+h2{
+  color:white;
+  text-align:center;
+}
 input{
   width:100%;
   padding:10px;
@@ -39,43 +43,21 @@ button{
 }
 </style>
 </head>
+
 <body>
 
 <div class="card">
+  <h2>ALPHA SOLUÇÕES</h2>
 
-  <!-- NÃO USAR FORM -->
- function login(){
-  const loginInput = document.getElementById("usuario");
-  const senhaInput = document.getElementById("senha");
+  <input type="text" id="usuario" placeholder="Usuário">
+  <input type="password" id="senha" placeholder="Senha">
 
-  if(!loginInput || !senhaInput){
-    alert("Campos de login não encontrados");
-    return;
-  }
+  <button type="button" onclick="login()">Entrar</button>
+</div>
 
-  const login = loginInput.value.trim();
-  const senha = senhaInput.value.trim();
-
-  if(!login || !senha){
-    alert("Preencha usuário e senha");
-    return;
-  }
-
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-  const user = usuarios.find(u => u.login === login && u.senha === senha);
-
-  if(!user){
-    alert("Usuário ou senha incorretos");
-    return;
-  }
-
-  localStorage.setItem("usuarioLogado", JSON.stringify(user));
-
-  location.href = "dashboard.html";
-}
-
-}
+<!-- JS -->
+<script src="login.js"></script>
 
 </body>
 </html>
+
