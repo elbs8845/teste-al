@@ -26,7 +26,21 @@ function login() {
     return;
   }
 
+  // Salva usuário logado
   localStorage.setItem("usuarioLogado", JSON.stringify(user));
 
-  window.location.href = "dashboard.html";
+  // Redirecionamento por tipo
+  if (user.tipo === "admin") {
+    window.location.href = "dashboard.html";
+  } 
+  else if (user.tipo === "supervisor") {
+    window.location.href = "dashboard.html";
+  } 
+  else if (user.tipo === "vendedor") {
+    window.location.href = "vendedor.html";
+  } 
+  else {
+    alert("Tipo de usuário inválido");
+  }
 }
+
