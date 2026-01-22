@@ -1,16 +1,8 @@
 function login() {
-  const loginInput = document.getElementById("usuario");
-  const senhaInput = document.getElementById("senha");
+  const usuario = document.getElementById("usuario").value.trim();
+  const senha = document.getElementById("senha").value.trim();
 
-  if (!loginInput || !senhaInput) {
-    alert("Campos de login não encontrados");
-    return;
-  }
-
-  const login = loginInput.value.trim();
-  const senha = senhaInput.value.trim();
-
-  if (!login || !senha) {
+  if (!usuario || !senha) {
     alert("Preencha usuário e senha");
     return;
   }
@@ -18,7 +10,7 @@ function login() {
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
   const user = usuarios.find(
-    u => u.login === login && u.senha === senha
+    u => u.login === usuario && u.senha === senha
   );
 
   if (!user) {
@@ -26,7 +18,12 @@ function login() {
     return;
   }
 
+  // 🔥 FORÇA GRAVAÇÃO (corrige celular)
+  localStorage.clear();
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
   localStorage.setItem("usuarioLogado", JSON.stringify(user));
 
-  window.location.href = "dashboard.html";
+  setTimeout(() => {
+    window.location.replace("dashboard.html");
+  }, 100);
 }
