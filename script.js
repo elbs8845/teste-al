@@ -2,9 +2,12 @@
 // CONTROLE DE SESSÃO
 // =====================
 const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
 if (!usuarioLogado) {
-  location.href = "index.html";
+  alert("Sessão não encontrada. Faça login novamente.");
+  window.location.replace("index.html");
 }
+
 
 // =====================
 // CONTATOS
