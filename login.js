@@ -18,12 +18,10 @@ function login() {
     return;
   }
 
-  // 🔥 FORÇA GRAVAÇÃO (corrige celular)
-  localStorage.clear();
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
   localStorage.setItem("usuarioLogado", JSON.stringify(user));
 
   setTimeout(() => {
     window.location.replace("dashboard.html");
   }, 100);
 }
+
