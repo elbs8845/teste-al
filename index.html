@@ -1,45 +1,69 @@
-function login() {
-  const loginInput = document.getElementById("usuario");
-  const senhaInput = document.getElementById("senha");
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ALPHA SOLUÇÕES - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  if (!loginInput || !senhaInput) {
-    alert("Campos de login não encontrados");
-    return;
-  }
+  <style>
+    body{
+      background:#0b1d39;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      margin:0;
+      font-family:Arial, sans-serif;
+    }
+    .card{
+      background:#0f254a;
+      padding:30px;
+      border-radius:15px;
+      width:320px;
+      box-sizing:border-box;
+    }
+    h2{
+      color:white;
+      text-align:center;
+      margin-bottom:20px;
+    }
+    input{
+      width:100%;
+      padding:12px;
+      margin-bottom:12px;
+      border-radius:8px;
+      border:none;
+      font-size:16px;
+      box-sizing:border-box;
+    }
+    button{
+      width:100%;
+      padding:12px;
+      background:#ff8c00;
+      color:white;
+      border:none;
+      border-radius:8px;
+      font-size:16px;
+      cursor:pointer;
+    }
+    button:hover{
+      background:#ff9f2d;
+    }
+  </style>
+</head>
 
-  const login = loginInput.value.trim();
-  const senha = senhaInput.value.trim();
+<body>
 
-  if (!login || !senha) {
-    alert("Preencha usuário e senha");
-    return;
-  }
+  <div class="card">
+    <h2>ALPHA SOLUÇÕES</h2>
 
-  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    <input type="text" id="usuario" placeholder="Usuário">
+    <input type="password" id="senha" placeholder="Senha">
 
-  const user = usuarios.find(
-    u => u.login === login && u.senha === senha
-  );
+    <button type="button" onclick="login()">Entrar</button>
+  </div>
 
-  if (!user) {
-    alert("Usuário ou senha incorretos");
-    return;
-  }
-
-  // Salva usuário logado
-  localStorage.setItem("usuarioLogado", JSON.stringify(user));
-
-  // Redirecionamento por tipo
-  if (user.tipo === "admin") {
-    window.location.href = "dashboard.html";
-  } 
-  else if (user.tipo === "supervisor") {
-    window.location.href = "dashboard.html";
-  } 
-  else if (user.tipo === "vendedor") {
-    window.location.href = "vendedor.html";
-  } 
-  else {
-    alert("Tipo de usuário inválido");
-  }
-}
+  <!-- JS -->
+  <script src="login.js"></script>
+</body>
+</html>
