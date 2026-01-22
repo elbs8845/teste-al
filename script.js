@@ -101,21 +101,20 @@ function delAg(index) {
 // =====================
 // VENDAS (CORRIGIDO)
 // =====================
-function addVenda() {
-  const cliente = document.getElementById("vCliente").value;
-  const valor = Number(document.getElementById("vValor").value);
+function addVenda(){
+  let cliente = document.getElementById("vCliente").value;
+  let valor = Number(document.getElementById("vValor").value);
 
-  if (!cliente || !valor) {
+  if(cliente === "" || valor === 0){
     alert("Preencha todos os campos");
     return;
   }
 
-  const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
 
   vendas.push({
-    cliente,
-    valor,
-    vendedor: usuarioLogado.login
+    cliente: cliente,
+    valor: valor
   });
 
   localStorage.setItem("vendas", JSON.stringify(vendas));
@@ -126,22 +125,42 @@ function addVenda() {
   listarVendas();
 }
 
-function listarVendas() {
-  const lista = document.getElementById("listaVendas");
-  lista.innerHTML = "";
 
-  const vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+function listarVendas(){
+  let lista = document.getElementById("listaVendas");
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+
+  lista.innerHTML = "";
 
   let total = 0;
 
-  const vendasFiltradas = vendas.filter(v =>
-    usuarioLogado.tipo !== "vendedor" || v.vendedor === usuarioLogado.login
-  );
+  vendas.forEach((v, i) => {
+    total += Number(v.valor);
 
-  if (vendasFiltradas.length === 0) {
-    lista.innerHTML = "<p>Nenhuma venda registrada.</p>";
-    return;
-  }
+    lista.innerHTML += `
+      <div class="item">
+        <span>${v.cliente} - R$ ${v.valor.toFixed(2)}</span>
+        <button onclick="excluirVenda(${i})">🗑️</button>
+      </div>
+    `;
+  });
+
+  lista.innerHTML += `
+    <hr>
+    <strong>Total: R$ ${total.toFixed(2)}</strong>
+  `;
+}
+
+function excluirVenda(index){
+  let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+
+  vendas.splice(index, 1);
+
+  localStorage.setItem("vendas", JSON.stringify(vendas));
+
+  listarVendas();
+}
+
 
   vendasFiltradas.forEach((v, i) => {
     total += Number(v.valor);
