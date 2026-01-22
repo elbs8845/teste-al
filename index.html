@@ -1,63 +1,45 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>ALPHA SOLUÇÕES - Login</title>
+function login() {
+  const loginInput = document.getElementById("usuario");
+  const senhaInput = document.getElementById("senha");
 
-<style>
-body{
-  background:#0b1d39;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  margin:0;
-  font-family:Arial;
+  if (!loginInput || !senhaInput) {
+    alert("Campos de login não encontrados");
+    return;
+  }
+
+  const login = loginInput.value.trim();
+  const senha = senhaInput.value.trim();
+
+  if (!login || !senha) {
+    alert("Preencha usuário e senha");
+    return;
+  }
+
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  const user = usuarios.find(
+    u => u.login === login && u.senha === senha
+  );
+
+  if (!user) {
+    alert("Usuário ou senha incorretos");
+    return;
+  }
+
+  // Salva usuário logado
+  localStorage.setItem("usuarioLogado", JSON.stringify(user));
+
+  // Redirecionamento por tipo
+  if (user.tipo === "admin") {
+    window.location.href = "dashboard.html";
+  } 
+  else if (user.tipo === "supervisor") {
+    window.location.href = "dashboard.html";
+  } 
+  else if (user.tipo === "vendedor") {
+    window.location.href = "vendedor.html";
+  } 
+  else {
+    alert("Tipo de usuário inválido");
+  }
 }
-.card{
-  background:#0f254a;
-  padding:30px;
-  border-radius:15px;
-  width:300px;
-}
-h2{
-  color:white;
-  text-align:center;
-}
-input{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-  border:none;
-}
-button{
-  width:100%;
-  padding:12px;
-  background:#ff8c00;
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-size:16px;
-  cursor:pointer;
-}
-</style>
-</head>
-
-<body>
-
-<div class="card">
-  <h2>ALPHA SOLUÇÕES</h2>
-
-  <input type="text" id="usuario" placeholder="Usuário">
-  <input type="password" id="senha" placeholder="Senha">
-
-  <button type="button" onclick="login()">Entrar</button>
-</div>
-
- <!-- 🔥 SCRIPTS (ORDEM CORRETA) -->
-  <script type="module" src="firebase.js"></script>
-  <script type="module" src="login.js"></script>
-
-</body>
-</html>
