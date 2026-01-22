@@ -1,16 +1,10 @@
 function login() {
-  const loginInput = document.getElementById("usuario");
-  const senhaInput = document.getElementById("senha");
+  alert("Botão clicado ✅"); // teste – depois pode remover
 
-  if (!loginInput || !senhaInput) {
-    alert("Campos de login não encontrados");
-    return;
-  }
+  const usuario = document.getElementById("usuario").value.trim();
+  const senha = document.getElementById("senha").value.trim();
 
-  const login = loginInput.value.trim();
-  const senha = senhaInput.value.trim();
-
-  if (!login || !senha) {
+  if (!usuario || !senha) {
     alert("Preencha usuário e senha");
     return;
   }
@@ -18,29 +12,25 @@ function login() {
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
   const user = usuarios.find(
-    u => u.login === login && u.senha === senha
+    u => u.login === usuario && u.senha === senha
   );
 
   if (!user) {
-    alert("Usuário ou senha incorretos");
+    alert("Usuário ou senha inválidos");
     return;
   }
 
-  // Salva usuário logado
   localStorage.setItem("usuarioLogado", JSON.stringify(user));
 
-  // Redirecionamento por tipo
-  if (user.tipo === "admin") {
-    window.location.href = "dashboard.html";
+  // 🔀 Redirecionamento por tipo
+  if (user.tipo === "vendedor") {
+    window.location.href = "vendedor.html";
   } 
   else if (user.tipo === "supervisor") {
     window.location.href = "dashboard.html";
   } 
-  else if (user.tipo === "vendedor") {
-    window.location.href = "vendedor.html";
-  } 
   else {
-    alert("Tipo de usuário inválido");
+    window.location.href = "dashboard.html";
   }
 }
 
