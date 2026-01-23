@@ -1,8 +1,16 @@
 function login() {
-  const usuario = document.getElementById("usuario").value.trim();
-  const senha = document.getElementById("senha").value.trim();
+  const usuario = document.getElementById("usuario");
+  const senha = document.getElementById("senha");
 
   if (!usuario || !senha) {
+    alert("Campos não encontrados");
+    return;
+  }
+
+  const login = usuario.value.trim();
+  const senhaVal = senha.value.trim();
+
+  if (!login || !senhaVal) {
     alert("Preencha usuário e senha");
     return;
   }
@@ -10,7 +18,7 @@ function login() {
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
   const user = usuarios.find(
-    u => u.login === usuario && u.senha === senha
+    u => u.login === login && u.senha === senhaVal
   );
 
   if (!user) {
@@ -20,8 +28,5 @@ function login() {
 
   localStorage.setItem("usuarioLogado", JSON.stringify(user));
 
-  setTimeout(() => {
-    window.location.replace("dashboard.html");
-  }, 100);
+  window.location.replace("dashboard.html");
 }
-
